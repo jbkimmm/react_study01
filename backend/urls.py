@@ -6,9 +6,7 @@ from .djangoapps.login import views as LoginViews
 from .djangoapps.index import views as IndexViews
 
 urlpatterns = [
-    url('sample$', SampleViews.sample, name='sample'),
-
-    url('login$', LoginViews.login, name='login'),
-
-    url('$', IndexViews.index, name='index'),
+    path('sample', SampleViews.sample, name='sample'),
+    path('login', LoginViews.login, name='login'),
+    path('', IndexViews.index, name='index'),
 ]

@@ -1,13 +1,268 @@
 <%inherit file="../common/frame.html"/>
 
-<%block name="css"></%block>
+<%block name="css">
+<style>
+    .main-con{
+    }
+    .aflex{
+        display: flex;
+    }
+    .aitem{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .fz10{
+        font-size: 10px;
+    }
+    .fz12{
+        font-size: 12px;
+    }
+    .fx2{
+        flex: 2;
+    }
+    .fx1{
+        flex: 1;
+    }
+    .fx05{
+        flex: 0.5;
+    }
+    .debug{
+        border: solid 1px red;
+    }
+    .subitem{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    table{
+        font-size: 10px;
+    }
+    td{
+        padding: 8px !important;
+    }
+    .support-text{
+        font-size: 10px;
+        margin-bottom: 5px;
+        color: #1147da;
+    }
+    .w120{
+        width: 120px;
+    }
+    .w140{
+        width: 140px;
+    }
+    .w220{
+        width: 220px;
+    }
+    .component1{
 
-<%block name="title">대주제</%block>
-<%block name="subtitle">소주제</%block>
+    }
+    .component2{
+
+    }
+    .component3{
+
+    }
+    .component4{
+
+    }
+    .mt15{
+        margin-top: 15px;
+    }
+    .pd8{
+        padding: 8px;
+    }
+    .war-text{
+        font-size: 10px;
+        margin-bottom: 5px;
+        color: red;
+        text-align: center;
+    }
+    .mt10{
+        margin-bottom: 10px;
+    }
+    .mt20{
+        margin-top: 20px;
+    }
+    .mt30{
+        margin-top: 30px;
+    }
+</style>
+</%block>
+
+<%block name="title">교수계획표</%block>
+<%block name="subtitle">공학 교수계획표 관리</%block>
 
 <%block name="content">
-내용
+<div class='main-con' id='vue'>
+    <div class='aflex fz10'>
+        <div class="form-group aitem fx05">
+            <label>학년도</label>
+            <select class="form-control fz12" id="exampleFormControlSelect1">
+                <option>2015</option>
+                <option>2016</option>
+                <option>2017</option>
+                <option>2018</option>
+                <option>2019</option>
+            </select>
+        </div>
+        <div class="form-group aitem fx05">
+            <label>학기</label>
+            <select class="form-control fz12" id="exampleFormControlSelect1">
+                <option>1학기</option>
+                <option>2학기</option>
+                <option>계절(여름)</option>
+                <option>계절(겨울)</option>
+            </select>
+        </div>
+        <div class="form-group aitem fx1">
+            <label>교수번호</label>
+            <input type="text" class="form-control fz12" id="exampleInputEmail1" placeholder="CP0001">
+        </div>
+        <div class="form-group aitem fx1">
+            <label>교수명</label>
+            <input type="text" class="form-control fz12" id="exampleInputEmail1" placeholder="홍길동">
+        </div>
+        <div class="form-group aitem fx2">
+            <label>교과목명</label>
+            <select class="form-control fz12" id="exampleFormControlSelect1">
+                <option>운영체제</option>
+                <option>알고리즘</option>
+                <option>자료구조</option>
+                <option>컴퓨터 네트워크</option>
+            </select>
+        </div>
+        <div class="form-group aitem fx1">
+            <label>인증구분</label>
+            <select class="form-control fz12" id="exampleFormControlSelect1">
+                <option>일반</option>
+                <option>공학교육인증</option>
+            </select>
+        </div>
+    </div>
+
+    <div class='aflex'>
+        <div class='fx1 subitem'>
+            <div class='support-text'>
+                분반선택 후 입력 (기준구분별 학습성과 및 평가방법이 달라짐)
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>분반</td>
+                        <td>인증구분</td>
+                        <td>기준구분</td>
+                        <td>인증이수구분</td>
+                        <td>설계이수구분</td>
+                        <td>설계학점</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>001</td>
+                        <td>공학인증교육</td>
+                        <td>KEC2015</td>
+                        <td>공학주제</td>
+                        <td>개별설계</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class='fx1 subitem'>
+            <div class='support-text'>
+                교과목담당교수 / 책임교수 정보조회
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>구분</td>
+                        <td>교수번호</td>
+                        <td>교수명</td>
+                        <td>소속학과명</td>
+                        <td>교내번호</td>
+                        <td>이메일</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>담당교수</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>책임교수</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class='aflex'>
+        <button v-on:click="changeTap(1)" v-if="tabIdx==1" class="subitem w120 md-btn md-raised mb-2 w-xs indigo">교과목 기본정보</button>
+        <button v-on:click="changeTap(1)" v-if="tabIdx!=1" class="subitem w120 md-btn md-raised mb-2 w-xs white">교과목 기본정보</button>
+
+        <button v-on:click="changeTap(2)" v-if="tabIdx==2" class="subitem w220 md-btn md-raised mb-2 w-xs indigo">학습성과 / 학습평가방법 / 강의정보</button>
+        <button v-on:click="changeTap(2)" v-if="tabIdx!=2" class="subitem w220 md-btn md-raised mb-2 w-xs white">학습성과 / 학습평가방법 / 강의정보</button>
+
+        <button v-on:click="changeTap(3)" v-if="tabIdx==3" class="subitem md-btn md-raised mb-2 w-xs indigo">주별계획</button>
+        <button v-on:click="changeTap(3)" v-if="tabIdx!=3" class="subitem md-btn md-raised mb-2 w-xs white">주별계획</button>
+
+        <button v-on:click="changeTap(4)" v-if="tabIdx==4" class="subitem w140 md-btn md-raised mb-2 w-xs indigo">Term Project</button>
+        <button v-on:click="changeTap(4)" v-if="tabIdx!=4" class="subitem w140 md-btn md-raised mb-2 w-xs white">Term Project</button>
+    </div>
+
+    <!-- component start -->
+    <%include file="component1.html"/>
+    <!-- component end -->
+
+    <!-- component start -->
+    <%include file="component2.html"/>
+    <!-- component end -->
+
+    <!-- component start -->
+    <%include file="component3.html"/>
+    <!-- component end -->
+
+    <!-- component start -->
+    <%include file="component4.html"/>
+    <!-- component end -->
+    
+</div>
 </%block>
 
 <%block name="js">
+<script>
+var app = new Vue({
+    el: '#vue',
+    delimiters: ['[[', ']]'],
+    created () {
+        console.log('hello vue');
+    },
+    data: {
+        items: [],
+        tabIdx: 4,
+    },
+    methods: {
+        changeTap: function(tabIdx){
+            this.tabIdx = tabIdx;
+        }
+    }
+})
+</script>
 </%block>

@@ -1,0 +1,28 @@
+<div class='component3 pd8' v-if='tabIdx == 3'>
+    <div class='war-text mt10'>
+        <div>영문으로 입력하십시오! 영문교수계획표로 복사될 항목입니다</div>
+        <div>주별 강의계획은 수강신청에 활용되는 주요정보이므로 충실하게 작성하여 주시기 바랍니다</div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td></td>
+                <td>강의내용 입력수정</td>
+                <td>실험 및 과제내용 입력수정</td>
+            </tr>
+        </thead>
+        <tbody>
+            % for n in range(1, 17):
+            <tr>
+                <td>제 ${n}주</td>
+                <td>
+                    <textarea class="form-control" rows="2"></textarea>
+                </td>
+                <td>
+                    <textarea class="form-control" rows="2"></textarea>
+                </td>
+            </tr>
+            % endfor
+        </tbody>
+    </table>
+</div>
