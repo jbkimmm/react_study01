@@ -65,6 +65,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -75,14 +76,13 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'main',
-        'USER': 'root',
-        'PASSWORD': '0000',
-        'HOST': '127.0.0.1',
+        'NAME': 'www',
+        'USER': 'cmsuser',
+        'PASSWORD': 'cmsuser',
+        'HOST': '182.237.86.248',
         'PORT': '3306',
     }
 }
-"""
 
 AUTH_PASSWORD_VALIDATORS = [
     {

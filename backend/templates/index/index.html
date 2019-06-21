@@ -77,6 +77,11 @@
         color: red;
         text-align: center;
     }
+    .war-text2{
+        font-size: 10px;
+        text-align: right;
+        color: red;
+    }
     .mt10{
         margin-bottom: 10px;
     }
@@ -85,6 +90,37 @@
     }
     .mt30{
         margin-top: 30px;
+    }
+    .ui-menu{
+        background: #242e3c;
+        color: #ffffff;
+        border-radius: 5px;
+        width: 200px;
+        display: block;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        cursor: pointer;
+    }
+    .ui-menu-item{
+        list-style-type: none;
+        margin-left: -20px;
+    }
+    .null-info{
+        border: solid 1px white;
+        text-align: center;
+        padding: 20px;
+        font-size: 12px;
+        color: #ff7207;
+        margin-bottom: 20px;
+    }
+    #class_table > tbody > tr{
+        cursor: pointer;
+    }
+    .disable-td{
+        background-color: #e1e9ff;
+    }
+    .tac{
+        text-align: center;
     }
 </style>
 </%block>
@@ -97,45 +133,35 @@
     <div class='aflex fz10'>
         <div class="form-group aitem fx05">
             <label>학년도</label>
-            <select class="form-control fz12" id="exampleFormControlSelect1">
-                <option>2015</option>
-                <option>2016</option>
-                <option>2017</option>
-                <option>2018</option>
-                <option>2019</option>
+            <select class="form-control fz12" id="year">
+                <option value='2019'>2019</option>
             </select>
         </div>
         <div class="form-group aitem fx05">
             <label>학기</label>
-            <select class="form-control fz12" id="exampleFormControlSelect1">
-                <option>1학기</option>
-                <option>2학기</option>
-                <option>계절(여름)</option>
-                <option>계절(겨울)</option>
+            <select class="form-control fz12" id="season">
+                <option value='1'>1학기</option>
+                <option value='2'>2학기</option>
             </select>
         </div>
         <div class="form-group aitem fx1">
             <label>교수번호</label>
-            <input type="text" class="form-control fz12" id="exampleInputEmail1" placeholder="CP0001">
+            <input type="text" class="form-control fz12" id="pro_num" placeholder="CP001">
         </div>
         <div class="form-group aitem fx1">
             <label>교수명</label>
-            <input type="text" class="form-control fz12" id="exampleInputEmail1" placeholder="홍길동">
+            <input type="text" class="form-control fz12" id="pro_name" placeholder="자동입력" disabled>
         </div>
         <div class="form-group aitem fx2">
             <label>교과목명</label>
-            <select class="form-control fz12" id="exampleFormControlSelect1">
-                <option>운영체제</option>
-                <option>알고리즘</option>
-                <option>자료구조</option>
-                <option>컴퓨터 네트워크</option>
+            <select class="form-control fz12" id="display_name">
+                <option value='0'>교과목을 선택해주세요</option>
             </select>
         </div>
         <div class="form-group aitem fx1">
             <label>인증구분</label>
-            <select class="form-control fz12" id="exampleFormControlSelect1">
-                <option>일반</option>
-                <option>공학교육인증</option>
+            <select class="form-control fz12" id="auth_type">
+                <option value='공학교육인증'>공학교육인증</option>
             </select>
         </div>
     </div>
@@ -145,12 +171,9 @@
             <div class='support-text'>
                 분반선택 후 입력 (기준구분별 학습성과 및 평가방법이 달라짐)
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered" id='class_table'>
                 <thead>
                     <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
                         <td>분반</td>
                         <td>인증구분</td>
                         <td>기준구분</td>
@@ -160,25 +183,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>001</td>
-                        <td>공학인증교육</td>
-                        <td>KEC2015</td>
-                        <td>공학주제</td>
-                        <td>개별설계</td>
-                        <td>1</td>
+                    <tr class='cl-group' :id='[[item.id]]' v-for="item in leftItems" v-on:click="selectClass($event)">
+                        <td>[[item.class_code]]</td>
+                        <td>[[item.cert_type]]</td>
+                        <td>[[item.base_type]]</td>
+                        <td>[[item.auth_type]]</td>
+                        <td>[[item.design_type]]</td>
+                        <td>[[item.design_point]]</td>
                     </tr>
                 </tbody>
             </table>
+            <div class='null-info' v-if="leftItems.length == 0">
+                분반이 존재하지 않습니다<br>
+                강좌명을 선택해주세요
+            </div>
         </div>
         <div class='fx1 subitem'>
             <div class='support-text'>
                 교과목담당교수 / 책임교수 정보조회
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered" id='target_table'>
                 <thead>
                     <tr>
                         <td>구분</td>
@@ -190,26 +214,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>담당교수</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>책임교수</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                    <tr v-for="item in rightItems">
+                        <td>[[item.professor_type]]</td>
+                        <td>[[item.professor_number]]</td>
+                        <td>[[item.professor_name]]</td>
+                        <td>[[item.department_name]]</td>
+                        <td>[[item.school_number]]</td>
+                        <td>[[item.email]]</td>
                     </tr>
                 </tbody>
             </table>
+            <div class='null-info' v-if="rightItems.length == 0">
+                담당교수/참여교수가 존재하지 않습니다<br>
+                분반을 선택해주세요
+            </div>
         </div>
     </div>
 
@@ -256,13 +274,301 @@ var app = new Vue({
     },
     data: {
         items: [],
-        tabIdx: 4,
+        tabIdx: 1,
+        selectClassID: 0,
+        leftItems: [],
+        rightItems: [],
+        timeItems: [],
+        timeBotArea: '',
+        checkItems: [],
+        WeekItems: {
+            'week1_course': '',
+            'week2_course': '',
+            'week3_course': '',
+            'week4_course': '',
+            'week5_course': '',
+            'week6_course': '',
+            'week7_course': '',
+            'week8_course': '',
+            'week9_course': '',
+            'week10_course': '',
+            'week11_course': '',
+            'week12_course': '',
+            'week13_course': '',
+            'week14_course': '',
+            'week15_course': '',
+            'week16_course': '',
+            'week1_practice': '',
+            'week2_practice': '',
+            'week3_practice': '',
+            'week4_practice': '',
+            'week5_practice': '',
+            'week6_practice': '',
+            'week7_practice': '',
+            'week8_practice': '',
+            'week9_practice': '',
+            'week10_practice': '',
+            'week11_practice': '',
+            'week12_practice': '',
+            'week13_practice': '',
+            'week14_practice': '',
+            'week15_practice': '',
+            'week16_practice': ''
+        },
+        left_list: {
+            'task': '',
+            'final_exam': '',
+            'other': '',
+            'presentation': '',
+            'report': '',
+            'practical': '',
+            'middle_exam': '',
+            'attendance': '',
+            'quiz': ''
+        },
+        right_list: {
+            'consult_time': '',
+            'pre_knowledge': '',
+            'main_note': '',
+            'sub_note1': '',
+            'sub_note2': '',
+            'sub_note3': '',
+            'ref_web': '',
+            'select_book': ''
+        },
+        bottom_list: [],
+        pre_content: '',
+        test_content: '',
+        design_content: '',
+        check_content: '',
+        report_content: '',
+        exe_content: '',
+        condition_list: [],
+        struct_list: [],
     },
     methods: {
         changeTap: function(tabIdx){
+
+            if(app.selectClassID == 0){
+                Swal.fire({
+                    type: 'warning',
+                    title: '알림',
+                    text: '분반을 먼저 선택해야합니다',
+                    confirmButtonColor: "#f8bb86", 
+                })
+                return false;
+            }
+
             this.tabIdx = tabIdx;
+
+            if(tabIdx == 1){
+                app.selectClass();
+            }
+            else if(tabIdx == 2){
+                app.loadTwo();
+            }
+            else if(tabIdx == 3){
+                app.loadThree();
+            }
+            else if(tabIdx == 4){
+                app.loadFour();
+            }
+
+        },
+        loadTwo: function(){
+
+            var csrf_token = $('#csrf_token').val();
+            var class_id = app.selectClassID;
+
+            $.post( "/api_getTwoTab", { 
+                csrfmiddlewaretoken: csrf_token, 
+                class_id: class_id
+            })
+            .done(function( data ) {
+                app.left_list = data.left_list;
+                app.right_list = data.right_list;
+                app.bottom_list = data.bottom_list;
+                app.pre_content = data.pre_content;
+                app.test_content = data.test_content;
+            });
+
+        },
+        loadThree: function(){
+
+            var csrf_token = $('#csrf_token').val();
+            var class_id = app.selectClassID;
+
+            console.log('class_id -> ', class_id);
+
+            $.post( "/api_getWeek", { 
+                csrfmiddlewaretoken: csrf_token, 
+                class_id: class_id
+            })
+            .done(function( data ) {
+                console.log('data.result -> ', data.result);
+                app.WeekItems = data.result[0];
+            });
+
+        },
+        loadFour: function(){
+
+            var csrf_token = $('#csrf_token').val();
+            var class_id = app.selectClassID;
+
+            console.log('class_id -> ', class_id);
+
+            $.post( "/api_getFourTab", { 
+                csrfmiddlewaretoken: csrf_token, 
+                class_id: class_id
+            })
+            .done(function( data ) {
+                console.log('data -> ', data);
+                app.design_content = data.design_content;
+                app.check_content = data.check_content;
+                app.report_content = data.report_content;
+                app.exe_content = data.exe_content;
+                app.condition_list = data.condition_list;
+                app.struct_list = data.struct_list;
+            });
+
+        },
+        loadClassList: function(course_id){
+            console.log('course_id -> ', course_id);
+            var csrf_token = $('#csrf_token').val();
+
+            $.post( "/api_getClass", { 
+                csrfmiddlewaretoken: csrf_token, 
+                course_id: course_id
+            })
+            .done(function( data ) {
+                console.log('data.result -> ', data.result);
+                app.leftItems = data.result;
+
+                // init
+                app.rightItems = [];
+                app.timeItems = [];
+                $('.cl-group').css('background-color', '#ffffff');
+            });
+        },
+        selectClass: function(e){
+            
+            try{
+               var class_id = e.currentTarget.id;
+            } catch(e){
+                console.log('e -> ', e);
+                var class_id = app.selectClassID
+            }
+            
+            var csrf_token = $('#csrf_token').val();
+
+            $('.cl-group').css('background-color', '#ffffff');
+            $('#' + class_id).css('background-color', '#dcedff');
+
+            app.selectClassID = class_id;
+
+            $.post( "/api_getProList", {
+                csrfmiddlewaretoken: csrf_token, 
+                class_id: class_id
+            })
+            .done(function( data ) {
+                console.log('data -> ', data);
+                app.rightItems = data.result;
+            })
+
+            $.post( "/api_getTime", {
+                csrfmiddlewaretoken: csrf_token, 
+                class_id: class_id
+            })
+            .done(function( data ) {
+                console.log('data -> ', data);
+                app.timeItems = data.result;
+                app.timeBotArea = data.content;
+            })
+
+            $.post( "/api_getCheck", {
+                csrfmiddlewaretoken: csrf_token, 
+                class_id: class_id
+            })
+            .done(function( data ) {
+                console.log('data -> ', data);
+                app.checkItems = data.result;
+            })
+
+            app.loadTwo();
+            app.loadThree();
+            app.loadFour();
+            
         }
     }
 })
+
+$(function(){
+
+    // auto complete
+    var availableTags = [
+      "CP001",
+      "CP002",
+      "CP003",
+      "CP004",
+      "CP005",
+      "CP006",
+      "CP007",
+      "CP008",
+      "CP009",
+      "CP010"
+    ];
+    $( "#pro_num" ).autocomplete({
+      source: availableTags
+    });
+
+    // 분반 로드
+    $("#display_name").change( function() {
+        var course_id = $('#display_name').val();
+        app.loadClassList(course_id);
+    });
+
+    // 교수명, 강좌명 로드
+    $('#pro_num').focusout(function(){
+        var csrf_token = $('#csrf_token').val();
+        var pro_num = $('#pro_num').val();
+        $.post( "/api_getProName", {
+             csrfmiddlewaretoken: csrf_token, 
+             pro_num: pro_num
+        })
+        .done(function( data ) {
+            $('#pro_name').val(data.result);
+
+            var year = $('#year').val();
+            var season = $('#season').val();
+            var pro_num = $('#pro_num').val();
+            var auth_type = $('#auth_type').val();
+
+            console.log('year -> ', year);
+            console.log('season -> ', season);
+            console.log('pro_num -> ', pro_num);
+            console.log('auth_type -> ', auth_type);
+
+            $.post( "/api_getCourse", {
+                csrfmiddlewaretoken: csrf_token, 
+                year: year,
+                season: season,
+                pro_num: pro_num,
+                auth_type: auth_type,
+            })
+            .done(function( data ) {
+                console.log('data -> ', data);
+
+                // init
+                $('.course-option').remove();
+
+                var r = data.result
+                for(var i=0; i<r.length; i++){
+                    var option = $("<option class='course-option' value='"+ r[i].id +"'>"+ r[i].display_name+"</option>");
+                    $('#display_name').append(option);
+                }
+            });
+        });
+    });
+});
 </script>
 </%block>

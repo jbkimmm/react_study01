@@ -3,7 +3,7 @@
         설계계획 입력수정
     </div>
     <div>
-        <textarea class="form-control" rows="4"></textarea>
+        <textarea class="form-control" rows="4">[[design_content]]</textarea>
     </div>
 
     <div class='aflex mt20'>
@@ -23,58 +23,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-for="item in condition_list">
                         <td>
                             <input type="checkbox">
                         </td>
-                        <td>01</td>
-                        <td>설계목표 설정법</td>
-                        <td>고객수요파악, 품질기능전개와 제품사양결정의 과정 중 일부를 수행</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>02</td>
-                        <td>합성(종합)</td>
-                        <td>개념설계(기능구조의 확정, 작동원리와 작용구조의 모색)</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>03</td>
-                        <td>분석</td>
-                        <td>상세설계(CAE 모델링 및 해석 - 부품의 배열, 형상, 재질, 치수등 결정) 생산가능성 및 경제성</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>04</td>
-                        <td>제작</td>
-                        <td>모형이나 시제품(PILOT TYPE)제작</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>05</td>
-                        <td>시험</td>
-                        <td>시제품 테스트</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>06</td>
-                        <td>평가</td>
-                        <td>시험 결과의 평가, 개선방안 수립</td>
+                        <td>[[item.c_code]]</td>
+                        <td>[[item.c_method]]</td>
+                        <td>[[item.c_content]]</td>
                     </tr>
                 </tbody>
             </table>
+            <div class='null-info' v-if="condition_list.length == 0">
+                설계구성요소가 존재하지 않습니다<br>
+            </div>
             <div class='support-text'>
-                설계구성요소 입력수정
+                설계제한조건 입력수정
             </div>
             <table class="table table-bordered">
                 <thead>
@@ -88,83 +51,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                        <tr v-for="item in struct_list">
                         <td>
                             <input type="checkbox">
                         </td>
-                        <td>02</td>
-                        <td>안전과 내구성</td>
-                        <td>안전설계(안전을 위하여 파손원인을 고려한 설계), 내구성설계(재료의 특성에 맞는 파괴)</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>03</td>
-                        <td>산업표준</td>
-                        <td>공업표준규격(국가, 단체), ISO표준규격 적용</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>04</td>
-                        <td>미학</td>
-                        <td>스타일링(인간의 느낌과 가치에 의한 외형 선택), 산업디자인</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>05</td>
-                        <td>윤리</td>
-                        <td>공학윤리헌장의 엔지니어의 윤리를 반영</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>06</td>
-                        <td>사회에 미치는 영향</td>
-                        <td>지적재산권(특허) 및 제조물 책임법의 준수</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>07</td>
-                        <td>환경</td>
-                        <td>친환경설계</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>08</td>
-                        <td>생산성</td>
-                        <td>생상공정(과정)을 고려한 배치 및 형상설계, 재료선정</td>
+                        <td>[[item.s_code]]</td>
+                        <td>[[item.s_method]]</td>
+                        <td>[[item.s_content]]</td>
                     </tr>
                 </tbody>
             </table>
+            <div class='null-info' v-if="struct_list.length == 0">
+                설계제한조건이 존재하지 않습니다<br>
+            </div>
         </div>
         <div class='fx1 subitem'>
             <div class='support-text'>
                 평가내용 입력수정
             </div>
             <div>
-                <textarea class="form-control" rows="4"></textarea>
+                <textarea class="form-control" rows="4">[[check_content]]</textarea>
             </div>
             <div class='support-text mt30'>
                 보고서내용 입력수정
             </div>
             <div>
-                <textarea class="form-control" rows="4"></textarea>
+                <textarea class="form-control" rows="4">[[report_content]]</textarea>
             </div>
             <div class='support-text mt30'>
                 수행일정 입력수정
             </div>
             <div>
-                <textarea class="form-control" rows="4"></textarea>
+                <textarea class="form-control" rows="4">[[exe_content]]</textarea>
             </div>
         </div>
     </div>

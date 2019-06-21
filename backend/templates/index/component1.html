@@ -18,38 +18,34 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>4</td>
-                <td>전공선택</td>
-                <td>DM24121</td>
-                <td>메카트로닉스</td>
-                <td>화요일</td>
-                <td>10:30 ~ 12:00</td>
-                <td>기계관</td>
-                <td>강의실</td>
-                <td>제어자동화시스템전공</td>
-                <td>3</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>전공선택</td>
-                <td>DM24121</td>
-                <td>메카트로닉스</td>
-                <td>목요일</td>
-                <td>10:30 ~ 12:00</td>
-                <td>기계관</td>
-                <td>강의실</td>
-                <td>제어자동화시스템전공</td>
-                <td>3</td>
+            <tr v-for="item in timeItems">
+                <td>[[item.grade]]</td>
+                <td>[[item.subject_type]]</td>
+                <td>[[item.subject_code]]</td>
+                <td>[[item.subject_name]]</td>
+                <td>[[item.subject_day]]</td>
+                <td>[[item.full_time]]</td>
+                <td>[[item.building]]</td>
+                <td>[[item.class_name]]</td>
+                <td>[[item.make_department]]</td>
+                <td>[[item.subject_point]]</td>
             </tr>
         </tbody>
     </table>
+    <div class='null-info' v-if="timeItems.length == 0">
+        개설교과목 정보가 존재하지 않습니다<br>
+        분반을 선택해주세요
+    </div>
 
     <div class='support-text'>
         교과목개요 입력수정
     </div>
     <div>
-        <textarea class="form-control" rows="3"></textarea>
+        <textarea class="form-control" rows="3">[[timeBotArea]]</textarea>
+    </div>
+    <div class='war-text2'>
+        <div>영문으로 입력하십시오! 영문교수계획표로 복사될 항목입니다</div>
+        <div>장애학생의 경우 장애학생지원센터와 강의 및 과제에 대한 사전 협의가 가능합니다</div>
     </div>
 
     <div class='support-text mt15'>
@@ -57,12 +53,12 @@
     </div>
     <table class="table table-bordered">
         <thead>
-            <tr>
+            <tr class='tac'>
                 <td colspan="3">교과목목표</td>
                 <td colspan="10">교육방법</td>
                 <td colspan='9'>평가방법</td>
             </tr>
-            <tr>
+            <tr class='tac'>
                 <td>번호</td>
                 <td>교과목 목표내역</td>
                 <td>핵심역량</td>
@@ -90,72 +86,96 @@
             </tr>
         </thead>
         <tbody>
-            % for n in range(0,6):
-            <tr>
-                <td>1</td>
-                <td>To understand Arduino based mechatronics system</td>
-                <td>7</td>
+            <tr class='tac' v-for="item in checkItems">
+                <td>[[item.cnt]]</td>
+                <td>[[item.target_name]]</td>
+                <td>[[item.core_point]]</td>
 
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_course == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_course == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_discussion == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_discussion == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_experiment == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_experiment == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_online == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_online == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_presentation == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_presentation == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_art == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_art == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_seminar == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_seminar == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_study == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_study == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_design == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_design == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.e_other == 'Y'" checked type="checkbox">
+                    <input v-if="item.e_other == 'N'" type="checkbox">
+                </td>
+                <td class='disable-td'>
+                    <input v-if="item.w_attendance == 'Y'" checked type="checkbox" disabled>
+                    <input v-if="item.w_attendance == 'N'" type="checkbox" disabled>
                 </td>
                 <td>
-                    <input type="checkbox">
-                </td>
-
-                <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_middle_exam == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_middle_exam == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_final_exam == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_final_exam == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_project == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_project == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_quiz == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_quiz == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_presentation == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_presentation == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_report == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_report == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input type="checkbox">
+                    <input v-if="item.w_practical == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_practical == 'N'" type="checkbox">
                 </td>
                 <td>
-                    
+                    <input v-if="item.w_other == 'Y'" checked type="checkbox">
+                    <input v-if="item.w_other == 'N'" type="checkbox">
                 </td>
             </tr>
-            %endfor
+
         </tbody>
     </table>
+    <div class='null-info' v-if="timeItems.length == 0">
+        교과목 표별 교육방법 및 평가방법 정보가 존재하지 않습니다<br>
+        분반을 선택해주세요
+    </div>
+    <div class='war-text2'>
+        <div>교과목목표의 평가방법(출석태도)는 선택하실 수 없습니다</div>
+    </div>
 </div>

@@ -3,10 +3,10 @@
         선수과목 및 지식조회
     </div>
     <div>
-        <textarea class="form-control" rows="3"></textarea>
+        <textarea class="form-control" rows="3">[[pre_content]]</textarea>
     </div>
 
-    <div class='support-text'>
+    <div class='support-text mt20'>
         학습평가방법 비율입력 (선택사항)
     </div>
     <div class='aflex'>
@@ -21,39 +21,39 @@
                 <tbody>
                     <tr>
                         <td>과제물</td>
-                        <td>0</td>
+                        <td>[[left_list.task]]</td>
                     </tr>
                     <tr>
                         <td>기말고사</td>
-                        <td>0</td>
+                        <td>[[left_list.final_exam]]</td>
                     </tr>
                     <tr>
                         <td>기타</td>
-                        <td>0</td>
+                        <td>[[left_list.other]]</td>
                     </tr>
                     <tr>
                         <td>발표</td>
-                        <td>10</td>
+                        <td>[[left_list.presentation]]</td>
                     </tr>
                     <tr>
                         <td>보고서</td>
-                        <td>10</td>
+                        <td>[[left_list.report]]</td>
                     </tr>
                     <tr>
                         <td>실기</td>
-                        <td>0</td>
+                        <td>[[left_list.practical]]</td>
                     </tr>
                     <tr>
                         <td>중간고사</td>
-                        <td>30</td>
+                        <td>[[left_list.middle_exam]]</td>
                     </tr>
                     <tr>
                         <td>출석태도</td>
-                        <td>10</td>
+                        <td>[[left_list.attendance]]</td>
                     </tr>
                     <tr>
                         <td>퀴즈</td>
-                        <td>0</td>
+                        <td>[[left_list.quiz]]</td>
                     </tr>
                 </tbody>
             </table>
@@ -69,35 +69,35 @@
                 <tbody>
                     <tr>
                         <td>상담시간</td>
-                        <td></td>
+                        <td>[[right_list.consult_time]]</td>
                     </tr>
                     <tr>
                         <td>선수지식</td>
-                        <td></td>
+                        <td>[[right_list.pre_knowledge]]</td>
                     </tr>
                     <tr>
                         <td>주교재</td>
-                        <td>Lecture note 2019</td>
+                        <td>[[right_list.main_note]]</td>
                     </tr>
                     <tr>
                         <td>부교재1</td>
-                        <td>안중환, 김화영, 임한석, 메카트로닉스와 기계기술-제2 개정판, 청문각, 1999</td>
+                        <td>[[right_list.sub_note1]]</td>
                     </tr>
                     <tr>
                         <td>부교재2</td>
-                        <td></td>
+                        <td>[[right_list.sub_note2]]</td>
                     </tr>
                     <tr>
                         <td>부교재3</td>
-                        <td></td>
+                        <td>[[right_list.sub_note3]]</td>
                     </tr>
                     <tr>
                         <td>관련웹</td>
-                        <td></td>
+                        <td>[[right_list.ref_web]]</td>
                     </tr>
                     <tr>
                         <td>지정도서</td>
-                        <td></td>
+                        <td>[[right_list.select_book]]</td>
                     </tr>
                 </tbody>
             </table>
@@ -108,7 +108,7 @@
         평가 관련 요구사항 입력수정 [필요 시 세부 평가방안 기재 (예: 설계 PROJECT)]
     </div>
     <div>
-        <textarea class="form-control" rows="2"></textarea>
+        <textarea class="form-control" rows="2">[[test_content]]</textarea>
     </div>
 
     <div class='support-text mt15'>
@@ -123,22 +123,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>3</td>
-                <td>학문의 융합을 통한 창조, 환경변화에 창의적으로 대응하여 프로젝트 팀의 구성원으로서 공학문제를 해결하는 능력</td>
-                <td>30</td>
+            <tr v-for="item in bottom_list">
+                <td>[[item.id]]</td>
+                <td>[[item.content]]</td>
+                <td>[[item.percnet]]</td>
             </tr>
-            <tr>
-                <td>4</td>
-                <td>공학문제 해결을 위해 최신정보, 연구결과, 적절한 도구 등 다양한 정보를 활용하고 미래변화에 능동적으로 대처할 수 있는 능력</td>
-                <td>30</td>
-            </tr>
-            <tr>
-                <td>7</td>
-                <td>공학기초지식을 통합적으로 문제해결에 응용하고 실험 및 데이터 분석을 통해 확인할 수 있는 능력</td>
-                <td>30</td>
-            </tr>
-
         </tbody>
     </table>
+    <div class='null-info' v-if="bottom_list.length == 0">
+        핵심역량이 존재하지 않습니다<br>
+    </div>
 </div>
