@@ -19,4 +19,5 @@ urlpatterns = [
     path('api_getWeek', IndexViews.api_getWeek, name='api_getWeek'),
     path('api_getTwoTab', IndexViews.api_getTwoTab, name='api_getTwoTab'),
     path('api_getFourTab', IndexViews.api_getFourTab, name='api_getFourTab'),
+    path('api_saveData', IndexViews.api_saveData, name='api_saveData'),
 ]

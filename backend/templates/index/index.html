@@ -91,6 +91,9 @@
     .mt30{
         margin-top: 30px;
     }
+    .mr5{
+        margin-right: 5px;
+    }
     .ui-menu{
         background: #242e3c;
         color: #ffffff;
@@ -121,6 +124,14 @@
     }
     .tac{
         text-align: center;
+    }
+    .tar{
+        text-align: right;
+    }
+    .itf{
+        padding: 2px !important;
+        font-size: 10px !important;
+        text-align: center !important;
     }
 </style>
 </%block>
@@ -243,6 +254,13 @@
 
         <button v-on:click="changeTap(4)" v-if="tabIdx==4" class="subitem w140 md-btn md-raised mb-2 w-xs indigo">Term Project</button>
         <button v-on:click="changeTap(4)" v-if="tabIdx!=4" class="subitem w140 md-btn md-raised mb-2 w-xs white">Term Project</button>
+    </div>
+
+    <div class='tar'>
+            <button class="btn btn-fw success" v-on:click="saveValue()">
+                <i class="fa fa-check mr5"></i>
+                저장
+            </button>
     </div>
 
     <!-- component start -->
@@ -497,7 +515,201 @@ var app = new Vue({
             app.loadTwo();
             app.loadThree();
             app.loadFour();
-            
+        },
+        saveValue: function(){
+            var csrf_token = $('#csrf_token').val();
+            var select_id = app.selectClassID;
+            var tabIdx = app.tabIdx;
+
+            console.log('select_id -> ', select_id);
+            console.log('tabIdx -> ', tabIdx);
+
+            if(select_id == 0){
+                Swal.fire({
+                    type: 'warning',
+                    title: '알림',
+                    text: '분반을 먼저 선택해야합니다',
+                    confirmButtonColor: "#f8bb86", 
+                })
+                return false;
+            }
+
+            if(tabIdx == 1){
+                var dump_truck = [];
+                var one_top = $('#one_top').val();
+                for(var i=0; i<$('.target-list').length; i++){
+                    var id = $('.target-list').eq(i).attr('id');
+                    var x1 = $('#x1_' + id).is(":checked");
+                    var x2 = $('#x2_' + id).is(":checked");
+                    var x3 = $('#x3_' + id).is(":checked");
+                    var x4 = $('#x4_' + id).is(":checked");
+                    var x5 = $('#x5_' + id).is(":checked");
+                    var x6 = $('#x6_' + id).is(":checked");
+                    var x7 = $('#x7_' + id).is(":checked");
+                    var x8 = $('#x8_' + id).is(":checked");
+                    var x9 = $('#x9_' + id).is(":checked");
+                    var x10 = $('#x10_' + id).is(":checked");
+                    var x11 = $('#x11_' + id).is(":checked");
+                    var x12 = $('#x12_' + id).is(":checked");
+                    var x13 = $('#x13_' + id).is(":checked");
+                    var x14 = $('#x14_' + id).is(":checked");
+                    var x15 = $('#x15_' + id).is(":checked");
+                    var x16 = $('#x16_' + id).is(":checked");
+                    var x17 = $('#x17_' + id).is(":checked");
+                    var x18 = $('#x18_' + id).is(":checked");
+                    var x19 = $('#x19_' + id).is(":checked");
+                    tmp = {
+                        'id': id,
+                        'x1': x1,
+                        'x2': x2,
+                        'x3': x3,
+                        'x4': x4,
+                        'x5': x5,
+                        'x6': x6,
+                        'x7': x7,
+                        'x8': x8,
+                        'x9': x9,
+                        'x10': x10,
+                        'x11': x11,
+                        'x12': x12,
+                        'x13': x13,
+                        'x14': x14,
+                        'x15': x15,
+                        'x16': x16,
+                        'x17': x17,
+                        'x18': x18,
+                        'x19': x19,
+                    }
+                    dump_truck.push(tmp);
+                }
+                storn = {
+                    select_id: select_id,
+                    tabIdx: tabIdx,
+                    dump_truck: dump_truck,
+                    one_top: one_top
+                }
+            } else if(tabIdx == 2){
+                var two_top = $('#two_top').val();
+                var two_bot = $('#two_bot').val();
+                var t1 = $('#t1').val();
+                var t2 = $('#t2').val();
+                var t3 = $('#t3').val();
+                var t4 = $('#t4').val();
+                var t5 = $('#t5').val();
+                var t6 = $('#t6').val();
+                var t7 = $('#t7').val();
+                var t8 = $('#t8').val();
+                var t9 = $('#t9').val();
+                var t10 = $('#t10').val();
+                var t11 = $('#t11').val();
+                var t12 = $('#t12').val();
+                var t13 = $('#t13').val();
+                var t14 = $('#t14').val();
+                var t15 = $('#t15').val();
+                var t16 = $('#t16').val();
+                var t17 = $('#t17').val();
+                storn = {
+                    select_id: select_id,
+                    tabIdx: tabIdx,
+                    two_top: two_top,
+                    two_bot: two_bot,
+                    t1: t1,
+                    t2: t2,
+                    t3: t3,
+                    t4: t4,
+                    t5: t5,
+                    t6: t6,
+                    t7: t7,
+                    t8: t8,
+                    t9: t9,
+                    t10: t10,
+                    t11: t11,
+                    t12: t12,
+                    t13: t13,
+                    t14: t14,
+                    t15: t15,
+                    t16: t16,
+                    t17: t17
+                }
+            } else if(tabIdx == 3){
+                wc_list = []
+                wp_list = []
+                for(i=1; i<17; i++){
+                    wc_list.push( $('#wc' + i).val() );
+                    wp_list.push( $('#wp' + i).val() );
+                }
+                storn = {
+                    select_id: select_id,
+                    tabIdx: tabIdx,
+                    wc_list: wc_list,
+                    wp_list: wp_list
+                }
+            } else if(tabIdx == 4){
+                var fff1 = $('#fff1').val();
+                var fff2 = $('#fff2').val();
+                var fff3 = $('#fff3').val();
+                var fff4 = $('#fff4').val();
+
+                var dump_truck1 = [];
+                for(var i=0; i<$('.target-listx').length; i++){
+                    var id = $('.target-listx').eq(i).attr('id');
+
+                    console.log('id -> ', id);
+
+                    var xx1 = $('#xx1_' + id).val();
+                    var xx2 = $('#xx2_' + id).val();
+                    var xx3 = $('#xx3_' + id).val();
+
+                    console.log('xx1 -> ', xx1);
+                    console.log('xx2 -> ', xx2);
+                    console.log('xx3 -> ', xx3);
+
+                    tmp = {
+                        'id': id,
+                        'xx1': xx1,
+                        'xx2': xx2,
+                        'xx3': xx3,
+                    }
+                    dump_truck1.push(tmp);
+                }
+                var dump_truck2 = [];
+                for(var i=0; i<$('.target-listxx').length; i++){
+                    var id = $('.target-listxx').eq(i).attr('id');
+                    var xx1 = $('#xxx1_' + id).val();
+                    var xx2 = $('#xxx2_' + id).val();
+                    var xx3 = $('#xxx3_' + id).val();
+                    tmp = {
+                        'id': id,
+                        'xxx1': xx1,
+                        'xxx2': xx2,
+                        'xxx3': xx3,
+                    }
+                    dump_truck2.push(tmp);
+                }
+                storn = {
+                    select_id: select_id,
+                    tabIdx: tabIdx,
+                    fff1: fff1,
+                    fff2: fff2,
+                    fff3: fff3,
+                    fff4: fff4,
+                    dump_truck1: dump_truck1,
+                    dump_truck2: dump_truck2,
+                }
+            }
+
+            $.ajax('/api_saveData',{
+                'data': JSON.stringify(storn),
+                'type': 'POST',
+                'beforeSend': function(xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                },
+                'processData': false,
+                'contentType': 'application/json'
+            })
+            .done(function( data ) {
+                console.log('data -> ', data);
+            });
         }
     }
 })

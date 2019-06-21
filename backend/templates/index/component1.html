@@ -41,7 +41,7 @@
         교과목개요 입력수정
     </div>
     <div>
-        <textarea class="form-control" rows="3">[[timeBotArea]]</textarea>
+        <textarea class="form-control" rows="3" id="one_top" :value="[[timeBotArea]]"></textarea>
     </div>
     <div class='war-text2'>
         <div>영문으로 입력하십시오! 영문교수계획표로 복사될 항목입니다</div>
@@ -86,86 +86,86 @@
             </tr>
         </thead>
         <tbody>
-            <tr class='tac' v-for="item in checkItems">
+            <tr class='target-list tac' v-for="item in checkItems" :id="[[item.id]]">
                 <td>[[item.cnt]]</td>
                 <td>[[item.target_name]]</td>
                 <td>[[item.core_point]]</td>
 
                 <td>
-                    <input v-if="item.e_course == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_course == 'N'" type="checkbox">
+                    <input :id="[['x1_'+item.id]]" v-if="item.e_course == 'Y'" checked type="checkbox">
+                    <input :id="[['x1_'+item.id]]" v-if="item.e_course == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_discussion == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_discussion == 'N'" type="checkbox">
+                    <input :id="[['x2_'+item.id]]" v-if="item.e_discussion == 'Y'" checked type="checkbox">
+                    <input :id="[['x2_'+item.id]]" v-if="item.e_discussion == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_experiment == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_experiment == 'N'" type="checkbox">
+                    <input :id="[['x3_'+item.id]]" v-if="item.e_experiment == 'Y'" checked type="checkbox">
+                    <input :id="[['x3_'+item.id]]" v-if="item.e_experiment == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_online == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_online == 'N'" type="checkbox">
+                    <input :id="[['x4_'+item.id]]" v-if="item.e_online == 'Y'" checked type="checkbox">
+                    <input :id="[['x4_'+item.id]]" v-if="item.e_online == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_presentation == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_presentation == 'N'" type="checkbox">
+                    <input :id="[['x5_'+item.id]]" v-if="item.e_presentation == 'Y'" checked type="checkbox">
+                    <input :id="[['x5_'+item.id]]" v-if="item.e_presentation == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_art == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_art == 'N'" type="checkbox">
+                    <input :id="[['x6_'+item.id]]" v-if="item.e_art == 'Y'" checked type="checkbox">
+                    <input :id="[['x6_'+item.id]]" v-if="item.e_art == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_seminar == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_seminar == 'N'" type="checkbox">
+                    <input :id="[['x7_'+item.id]]" v-if="item.e_seminar == 'Y'" checked type="checkbox">
+                    <input :id="[['x7_'+item.id]]" v-if="item.e_seminar == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_study == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_study == 'N'" type="checkbox">
+                    <input :id="[['x8_'+item.id]]" v-if="item.e_study == 'Y'" checked type="checkbox">
+                    <input :id="[['x8_'+item.id]]" v-if="item.e_study == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_design == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_design == 'N'" type="checkbox">
+                    <input :id="[['x9_'+item.id]]" v-if="item.e_design == 'Y'" checked type="checkbox">
+                    <input :id="[['x9_'+item.id]]" v-if="item.e_design == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.e_other == 'Y'" checked type="checkbox">
-                    <input v-if="item.e_other == 'N'" type="checkbox">
+                    <input :id="[['x10_'+item.id]]" v-if="item.e_other == 'Y'" checked type="checkbox">
+                    <input :id="[['x10_'+item.id]]" v-if="item.e_other == 'N'" type="checkbox">
                 </td>
                 <td class='disable-td'>
-                    <input v-if="item.w_attendance == 'Y'" checked type="checkbox" disabled>
-                    <input v-if="item.w_attendance == 'N'" type="checkbox" disabled>
+                    <input :id="[['x11_'+item.id]]" v-if="item.w_attendance == 'Y'" checked type="checkbox" disabled>
+                    <input :id="[['x11_'+item.id]]" v-if="item.w_attendance == 'N'" type="checkbox" disabled>
                 </td>
                 <td>
-                    <input v-if="item.w_middle_exam == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_middle_exam == 'N'" type="checkbox">
+                    <input :id="[['x12_'+item.id]]" v-if="item.w_middle_exam == 'Y'" checked type="checkbox">
+                    <input :id="[['x12_'+item.id]]" v-if="item.w_middle_exam == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_final_exam == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_final_exam == 'N'" type="checkbox">
+                    <input :id="[['x13_'+item.id]]" v-if="item.w_final_exam == 'Y'" checked type="checkbox">
+                    <input :id="[['x13_'+item.id]]" v-if="item.w_final_exam == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_project == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_project == 'N'" type="checkbox">
+                    <input :id="[['x14_'+item.id]]" v-if="item.w_project == 'Y'" checked type="checkbox">
+                    <input :id="[['x14_'+item.id]]" v-if="item.w_project == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_quiz == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_quiz == 'N'" type="checkbox">
+                    <input :id="[['x15_'+item.id]]" v-if="item.w_quiz == 'Y'" checked type="checkbox">
+                    <input :id="[['x15_'+item.id]]" v-if="item.w_quiz == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_presentation == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_presentation == 'N'" type="checkbox">
+                    <input :id="[['x16_'+item.id]]" v-if="item.w_presentation == 'Y'" checked type="checkbox">
+                    <input :id="[['x16_'+item.id]]" v-if="item.w_presentation == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_report == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_report == 'N'" type="checkbox">
+                    <input :id="[['x17_'+item.id]]" v-if="item.w_report == 'Y'" checked type="checkbox">
+                    <input :id="[['x17_'+item.id]]" v-if="item.w_report == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_practical == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_practical == 'N'" type="checkbox">
+                    <input :id="[['x18_'+item.id]]" v-if="item.w_practical == 'Y'" checked type="checkbox">
+                    <input :id="[['x18_'+item.id]]" v-if="item.w_practical == 'N'" type="checkbox">
                 </td>
                 <td>
-                    <input v-if="item.w_other == 'Y'" checked type="checkbox">
-                    <input v-if="item.w_other == 'N'" type="checkbox">
+                    <input :id="[['x19_'+item.id]]" v-if="item.w_other == 'Y'" checked type="checkbox">
+                    <input :id="[['x19_'+item.id]]" v-if="item.w_other == 'N'" type="checkbox">
                 </td>
             </tr>
 

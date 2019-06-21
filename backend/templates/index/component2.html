@@ -3,7 +3,7 @@
         선수과목 및 지식조회
     </div>
     <div>
-        <textarea class="form-control" rows="3">[[pre_content]]</textarea>
+        <textarea id="two_top" class="form-control" rows="3" :value='[[pre_content]]'></textarea>
     </div>
 
     <div class='support-text mt20'>
@@ -21,39 +21,57 @@
                 <tbody>
                     <tr>
                         <td>과제물</td>
-                        <td>[[left_list.task]]</td>
+                        <td>
+                                <input id="t1" type='text' class='form-control itf' :value='[[left_list.task]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>기말고사</td>
-                        <td>[[left_list.final_exam]]</td>
+                        <td>
+                                <input id="t2" type='text' class='form-control itf' :value='[[left_list.final_exam]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>기타</td>
-                        <td>[[left_list.other]]</td>
+                        <td>
+                                <input id="t3" type='text' class='form-control itf' :value='[[left_list.other]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>발표</td>
-                        <td>[[left_list.presentation]]</td>
+                        <td>
+                                <input id="t4" type='text' class='form-control itf' :value='[[left_list.presentation]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>보고서</td>
-                        <td>[[left_list.report]]</td>
+                        <td>
+                                <input id="t5" type='text' class='form-control itf' :value='[[left_list.report]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>실기</td>
-                        <td>[[left_list.practical]]</td>
+                        <td>
+                                <input id="t6" type='text' class='form-control itf' :value='[[left_list.practical]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>중간고사</td>
-                        <td>[[left_list.middle_exam]]</td>
+                        <td>
+                                <input id="t7" type='text' class='form-control itf' :value='[[left_list.middle_exam]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>출석태도</td>
-                        <td>[[left_list.attendance]]</td>
+                        <td>
+                                <input id="t8" type='text' class='form-control itf' :value='[[left_list.attendance]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>퀴즈</td>
-                        <td>[[left_list.quiz]]</td>
+                        <td>
+                                <input id="t9" type='text' class='form-control itf' :value='[[left_list.quiz]]'>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -69,35 +87,51 @@
                 <tbody>
                     <tr>
                         <td>상담시간</td>
-                        <td>[[right_list.consult_time]]</td>
+                        <td>
+                                <input id="t10" type='text' class='form-control itf' :value='[[right_list.consult_time]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>선수지식</td>
-                        <td>[[right_list.pre_knowledge]]</td>
+                        <td>
+                                <input id="t11" type='text' class='form-control itf' :value='[[right_list.pre_knowledge]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>주교재</td>
-                        <td>[[right_list.main_note]]</td>
+                        <td>
+                                <input id="t12" type='text' class='form-control itf' :value='[[right_list.main_note]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>부교재1</td>
-                        <td>[[right_list.sub_note1]]</td>
+                        <td>
+                                <input id="t13" type='text' class='form-control itf' :value='[[right_list.sub_note1]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>부교재2</td>
-                        <td>[[right_list.sub_note2]]</td>
+                        <td>
+                                <input id="t14" type='text' class='form-control itf' :value='[[right_list.sub_note2]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>부교재3</td>
-                        <td>[[right_list.sub_note3]]</td>
+                        <td>
+                                <input id="t15" type='text' class='form-control itf' :value='[[right_list.sub_note3]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>관련웹</td>
-                        <td>[[right_list.ref_web]]</td>
+                        <td>
+                                <input id="t16" type='text' class='form-control itf' :value='[[right_list.ref_web]]'>
+                        </td>
                     </tr>
                     <tr>
                         <td>지정도서</td>
-                        <td>[[right_list.select_book]]</td>
+                        <td>
+                                <input id="t17" type='text' class='form-control itf' :value='[[right_list.select_book]]'>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -108,7 +142,7 @@
         평가 관련 요구사항 입력수정 [필요 시 세부 평가방안 기재 (예: 설계 PROJECT)]
     </div>
     <div>
-        <textarea class="form-control" rows="2">[[test_content]]</textarea>
+        <textarea id="two_bot" class="form-control" rows="2" :value='[[test_content]]'></textarea>
     </div>
 
     <div class='support-text mt15'>

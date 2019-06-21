@@ -3,7 +3,7 @@
         설계계획 입력수정
     </div>
     <div>
-        <textarea class="form-control" rows="4">[[design_content]]</textarea>
+        <textarea id='fff1' class="form-control" rows="4" :value='[[design_content]]'></textarea>
     </div>
 
     <div class='aflex mt20'>
@@ -14,22 +14,22 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
                         <td>코드</td>
                         <td>평가방법</td>
                         <td>내용</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in condition_list">
+                    <tr class='target-listx' v-for="item in condition_list" :id="[[item.id]]">
                         <td>
-                            <input type="checkbox">
+                                <input :id="[['xx1_'+item.id]]" type='text' class='form-control itf' :value='[[item.c_code]]'>
                         </td>
-                        <td>[[item.c_code]]</td>
-                        <td>[[item.c_method]]</td>
-                        <td>[[item.c_content]]</td>
+                        <td>
+                                <input :id="[['xx2_'+item.id]]" type='text' class='form-control itf' :value='[[item.c_method]]'>
+                        </td>
+                        <td>
+                                <input :id="[['xx3_'+item.id]]" type='text' class='form-control itf' :value='[[item.c_content]]'>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -42,22 +42,22 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <td>
-                            <input type="checkbox">
-                        </td>
                         <td>코드</td>
                         <td>평가방법</td>
                         <td>내용</td>
                     </tr>
                 </thead>
                 <tbody>
-                        <tr v-for="item in struct_list">
+                    <tr class='target-listxx' v-for="item in struct_list" :id="[[item.id]]">
                         <td>
-                            <input type="checkbox">
+                            <input :id="[['xxx1_'+item.id]]" type='text' class='form-control itf' :value='[[item.s_code]]'>
                         </td>
-                        <td>[[item.s_code]]</td>
-                        <td>[[item.s_method]]</td>
-                        <td>[[item.s_content]]</td>
+                        <td>
+                            <input :id="[['xxx2_'+item.id]]" type='text' class='form-control itf' :value='[[item.s_method]]'>
+                        </td>
+                        <td>
+                            <input :id="[['xxx3_'+item.id]]" type='text' class='form-control itf' :value='[[item.s_content]]'>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -70,19 +70,19 @@
                 평가내용 입력수정
             </div>
             <div>
-                <textarea class="form-control" rows="4">[[check_content]]</textarea>
+                <textarea  id='fff2' class="form-control" rows="4" :value='[[check_content]]'></textarea>
             </div>
             <div class='support-text mt30'>
                 보고서내용 입력수정
             </div>
             <div>
-                <textarea class="form-control" rows="4">[[report_content]]</textarea>
+                <textarea  id='fff3' class="form-control" rows="4" :value='[[report_content]]'></textarea>
             </div>
             <div class='support-text mt30'>
                 수행일정 입력수정
             </div>
             <div>
-                <textarea class="form-control" rows="4">[[exe_content]]</textarea>
+                <textarea  id='fff4' class="form-control" rows="4" :value='[[exe_content]]'></textarea>
             </div>
         </div>
     </div>
