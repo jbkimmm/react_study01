@@ -709,6 +709,22 @@ var app = new Vue({
             })
             .done(function( data ) {
                 console.log('data -> ', data);
+                if(data.result == 200){
+                    Swal.fire({
+                        type: 'success',
+                        title: '완료',
+                        text: '데이터가 저장되었습니다',
+                        confirmButtonColor: "#28a745", 
+                    })
+                }
+                else if(data.result == 400){
+                    Swal.fire({
+                        type: 'warning',
+                        title: '알림',
+                        text: '합습평가 비율의 합계는 100 이어야합니다',
+                        confirmButtonColor: "#f8bb86", 
+                    })
+                }
             });
         }
     }

@@ -252,7 +252,7 @@ def api_getTwoTab(request):
     )
     left_list = {
         'task': tcp.task,
-        'final_exam': tcp.task,
+        'final_exam': tcp.final_exam,
         'other': tcp.other,
         'presentation': tcp.presentation,
         'report': tcp.report,
@@ -422,6 +422,30 @@ def api_saveData(request):
         t15 = rjson['t15']
         t16 = rjson['t16']
         t17 = rjson['t17']
+
+        result = 0
+        for n in range(1, 10):
+            result += int(rjson['t' + str(n)])
+
+        if result != 100:
+            return JsonResponse({'result': 400})
+
+        print('t1 -> ', t1)
+        print('t2 -> ', t2)
+        print('t3 -> ', t3)
+        print('t4 -> ', t4)
+        print('t5 -> ', t5)
+        print('t6 -> ', t6)
+        print('t8 -> ', t8)
+        print('t9 -> ', t9)
+        print('t10 -> ', t10)
+        print('t11 -> ', t11)
+        print('t12 -> ', t12)
+        print('t13 -> ', t13)
+        print('t14 -> ', t14)
+        print('t15 -> ', t15)
+        print('t16 -> ', t16)
+        print('t17 -> ', t17)
 
         tcc = TblCourseClass.objects.get(id=select_id)
         tcc.pre_content = two_top
