@@ -3,7 +3,7 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
@@ -16,7 +16,6 @@ class TblCourse(models.Model):
     main_professor = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'tbl_course'
 
 
@@ -32,7 +31,6 @@ class TblCourseBook(models.Model):
     select_book = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_book'
 
 
@@ -54,7 +52,6 @@ class TblCourseClass(models.Model):
     sub_professor = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_class'
 
 
@@ -65,7 +62,6 @@ class TblCourseCondition(models.Model):
     c_content = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_condition'
 
 
@@ -75,7 +71,6 @@ class TblCourseCore(models.Model):
     percnet = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_core'
 
 
@@ -92,7 +87,6 @@ class TblCoursePercent(models.Model):
     quiz = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_percent'
 
 
@@ -103,7 +97,6 @@ class TblCourseStruct(models.Model):
     s_content = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_struct'
 
 
@@ -122,7 +115,6 @@ class TblCourseSubject(models.Model):
     subject_point = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_subject'
 
 
@@ -151,7 +143,6 @@ class TblCourseTarget(models.Model):
     w_other = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_target'
 
 
@@ -191,7 +182,6 @@ class TblCourseWeek(models.Model):
     week16_practice = models.TextField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_course_week'
 
 
@@ -204,5 +194,4 @@ class TblProfessor(models.Model):
     email = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tbl_professor'

@@ -65,22 +65,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'www',
-        'USER': 'cmsuser',
-        'PASSWORD': 'cmsuser',
-        'HOST': '182.237.86.248',
-        'PORT': '3306',
     }
 }
 
