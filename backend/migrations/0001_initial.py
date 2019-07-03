@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='TblCourse',
+            name='Course',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('course_year', models.CharField(max_length=10)),
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseBook',
+            name='CourseBook',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseClass',
+            name='CourseClass',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('course_id', models.IntegerField()),
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseCondition',
+            name='CourseCondition',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseCore',
+            name='CourseCore',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -98,7 +98,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCoursePercent',
+            name='CoursePercent',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -118,7 +118,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseStruct',
+            name='CourseStruct',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -132,7 +132,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseSubject',
+            name='CourseSubject',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -154,7 +154,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseTarget',
+            name='CourseTarget',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -186,7 +186,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblCourseWeek',
+            name='CourseWeek',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_id', models.IntegerField()),
@@ -229,7 +229,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='TblProfessor',
+            name='Professor',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('professor_type', models.CharField(max_length=10)),

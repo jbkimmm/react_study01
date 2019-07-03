@@ -8,19 +8,25 @@
 from django.db import models
 
 
-class TblCourse(models.Model):
+class Course(models.Model):
     course_year = models.CharField(max_length=10)
     season = models.CharField(max_length=10)
     display_name = models.CharField(max_length=255)
     cert_type = models.CharField(max_length=10)
-    main_professor = models.IntegerField()
+    professor = models.ForeignKey('Professor', db_column='main_professor', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'tbl_course'
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'display_name': self.display_name,
+        }
 
-class TblCourseBook(models.Model):
-    class_id = models.IntegerField()
+
+class CourseBook(models.Model):
+    course_class = models.OneToOneField('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     consult_time = models.CharField(max_length=255, blank=True, null=True)
     pre_knowledge = models.CharField(max_length=255, blank=True, null=True)
     main_note = models.CharField(max_length=255, blank=True, null=True)
@@ -33,9 +39,21 @@ class TblCourseBook(models.Model):
     class Meta:
         db_table = 'tbl_course_book'
 
+    def as_dict(self):
+        return {
+            'consult_time': self.consult_time,
+            'pre_knowledge': self.pre_knowledge,
+            'main_note': self.main_note,
+            'sub_note1': self.sub_note1,
+            'sub_note2': self.sub_note2,
+            'sub_note3': self.sub_note3,
+            'ref_web': self.ref_web,
+            'select_book': self.select_book
+        }
 
-class TblCourseClass(models.Model):
-    course_id = models.IntegerField()
+
+class CourseClass(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     class_code = models.CharField(max_length=100)
     cert_type = models.CharField(max_length=100)
     base_type = models.CharField(max_length=100)
@@ -49,14 +67,25 @@ class TblCourseClass(models.Model):
     check_content = models.TextField(blank=True, null=True)
     report_content = models.TextField(blank=True, null=True)
     exe_content = models.TextField(blank=True, null=True)
-    sub_professor = models.IntegerField()
+    professor = models.ForeignKey('Professor', db_column='sub_professor', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'tbl_course_class'
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'class_code': self.class_code,
+            'cert_type': self.cert_type,
+            'base_type': self.base_type,
+            'auth_type': self.auth_type,
+            'design_type': self.design_type,
+            'design_point': self.design_point,
+        }
 
-class TblCourseCondition(models.Model):
-    class_id = models.IntegerField()
+
+class CourseCondition(models.Model):
+    course_class = models.ForeignKey('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     c_code = models.CharField(max_length=255, blank=True, null=True)
     c_method = models.CharField(max_length=255, blank=True, null=True)
     c_content = models.CharField(max_length=255, blank=True, null=True)
@@ -64,18 +93,33 @@ class TblCourseCondition(models.Model):
     class Meta:
         db_table = 'tbl_course_condition'
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'c_code': self.c_code,
+            'c_method': self.c_method,
+            'c_content': self.c_content,
+        }
 
-class TblCourseCore(models.Model):
-    class_id = models.IntegerField()
+
+
+class CourseCore(models.Model):
+    course_class = models.ForeignKey('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     content = models.CharField(max_length=255, blank=True, null=True)
-    percnet = models.CharField(max_length=100, blank=True, null=True)
+    percnet = models.CharField(max_length=100, blank=True, null=True)  # FIXME: 오타?
 
     class Meta:
         db_table = 'tbl_course_core'
 
+    def as_dict(self, **kwargs):
+        return dict({
+            'content': self.content,
+            'percnet': self.percnet,
+        }, **kwargs)
 
-class TblCoursePercent(models.Model):
-    class_id = models.IntegerField()
+
+class CoursePercent(models.Model):
+    course_class = models.OneToOneField('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     task = models.IntegerField()
     final_exam = models.IntegerField()
     other = models.IntegerField()
@@ -89,9 +133,22 @@ class TblCoursePercent(models.Model):
     class Meta:
         db_table = 'tbl_course_percent'
 
+    def as_dict(self):
+        return {
+            'task': self.task,
+            'final_exam': self.final_exam,
+            'other': self.other,
+            'presentation': self.presentation,
+            'report': self.report,
+            'practical': self.practical,
+            'middle_exam': self.middle_exam,
+            'attendance': self.attendance,
+            'quiz': self.quiz,
+        }
 
-class TblCourseStruct(models.Model):
-    class_id = models.IntegerField()
+
+class CourseStruct(models.Model):
+    course_class = models.ForeignKey('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     s_code = models.CharField(max_length=255, blank=True, null=True)
     s_method = models.CharField(max_length=255, blank=True, null=True)
     s_content = models.CharField(max_length=255, blank=True, null=True)
@@ -99,9 +156,17 @@ class TblCourseStruct(models.Model):
     class Meta:
         db_table = 'tbl_course_struct'
 
+    def as_dict(self):
+        return {
+            'id': self.id,
+            's_code': self.s_code,
+            's_method': self.s_method,
+            's_content': self.s_content,
+        }
 
-class TblCourseSubject(models.Model):
-    class_id = models.IntegerField()
+
+class CourseSubject(models.Model):
+    course_class = models.ForeignKey('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     grade = models.IntegerField()
     subject_type = models.CharField(max_length=100)
     subject_code = models.CharField(max_length=100)
@@ -117,9 +182,23 @@ class TblCourseSubject(models.Model):
     class Meta:
         db_table = 'tbl_course_subject'
 
+    def as_dict(self):
+        return {
+            'grade': self.grade,
+            'subject_type': self.subject_type,
+            'subject_code': self.subject_code,
+            'subject_name': self.subject_name,
+            'subject_day': self.subject_day,
+            'full_time': self.start_time + ' ~ ' + self.end_time,
+            'building': self.building,
+            'class_name': self.class_name,
+            'make_department': self.make_department,
+            'subject_point': self.subject_point,
+        }
 
-class TblCourseTarget(models.Model):
-    class_id = models.IntegerField()
+
+class CourseTarget(models.Model):
+    course_class = models.ForeignKey('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     target_name = models.CharField(max_length=255)
     core_point = models.IntegerField()
     e_course = models.CharField(max_length=10, blank=True, null=True)
@@ -145,9 +224,35 @@ class TblCourseTarget(models.Model):
     class Meta:
         db_table = 'tbl_course_target'
 
+    def as_dict(self, **kwargs):
+        return dict({
+            'id': self.id,
+            'target_name': self.target_name,
+            'core_point': self.core_point,
+            'e_course': self.e_course,
+            'e_discussion': self.e_discussion,
+            'e_experiment': self.e_experiment,
+            'e_online': self.e_online,
+            'e_presentation': self.e_presentation,
+            'e_art': self.e_art,
+            'e_seminar': self.e_seminar,
+            'e_study': self.e_study,
+            'e_design': self.e_design,
+            'e_other': self.e_other,
+            'w_attendance': self.w_attendance,
+            'w_middle_exam': self.w_middle_exam,
+            'w_final_exam': self.w_final_exam,
+            'w_project': self.w_project,
+            'w_quiz': self.w_quiz,
+            'w_presentation': self.w_presentation,
+            'w_report': self.w_report,
+            'w_practical': self.w_practical,
+            'w_other': self.w_other,
+        }, **kwargs)
 
-class TblCourseWeek(models.Model):
-    class_id = models.IntegerField()
+
+class CourseWeek(models.Model):
+    course_class = models.OneToOneField('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     week1_course = models.TextField(blank=True, null=True)
     week2_course = models.TextField(blank=True, null=True)
     week3_course = models.TextField(blank=True, null=True)
@@ -184,8 +289,19 @@ class TblCourseWeek(models.Model):
     class Meta:
         db_table = 'tbl_course_week'
 
+    def as_dict(self):
+        obj = {}
+        for i in range(1, 16+1):
+            course_key = 'week{}_course'.format(i)
+            course_value = getattr(self, course_key)
+            practice_key = 'week{}_practice'.format(i)
+            practice_value = getattr(self, practice_key)
+            obj[course_key] = course_value
+            obj[practice_key] = practice_value
+        return obj
 
-class TblProfessor(models.Model):
+
+class Professor(models.Model):
     professor_type = models.CharField(max_length=10)
     professor_number = models.CharField(max_length=255)
     professor_name = models.CharField(max_length=255)
@@ -195,3 +311,14 @@ class TblProfessor(models.Model):
 
     class Meta:
         db_table = 'tbl_professor'
+
+    def as_dict(self):
+        return {
+            'professor_type': self.professor_type,
+            'professor_number': self.professor_number,
+            'professor_name': self.professor_name,
+            'department_name': self.department_name,
+            'school_number': self.school_number,
+            'email': self.email,
+        }
+

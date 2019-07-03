@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_protect
 from django.db import connections
@@ -13,332 +13,124 @@ def index(request):
 
 
 def api_getProName(request):
-
     pro_num = request.POST.get('pro_num')
-    tp = TblProfessor.objects.get(professor_number=pro_num)
-    
-    return JsonResponse({'result': tp.professor_name})
+    prof = get_object_or_404(Professor, professor_number=pro_num)
+    return JsonResponse({'result': prof.professor_name})
 
 
 def api_getCourse(request):
-
     year = request.POST.get('year')
     season = request.POST.get('season')
     pro_num = request.POST.get('pro_num')
     auth_type = request.POST.get('auth_type')
 
-    print('year -> ', year)
-    print('season -> ', season)
-    print('pro_num -> ', pro_num)
-    print('auth_type -> ', auth_type)
+    professor = get_object_or_404(Professor, professor_number=pro_num)
 
-    tp = TblProfessor.objects.get(
-        professor_number = pro_num
-    )
-
-    tc = TblCourse.objects.filter(
+    qs = professor.course_set.all()
+    qs = qs.filter(
         course_year = year,
         season = season,
-        cert_type = auth_type,
-        main_professor = tp.id
-    )
+        cert_type = auth_type)
 
-    res = []
-    for t in tc:
-        tmp = {}
-        tmp['id'] = t.id
-        tmp['display_name'] = t.display_name
-        res.append(tmp)
-
-    return JsonResponse({'result': res})
+    return JsonResponse({
+        'result': [course.as_dict() for course in qs],
+    })
 
 
 def api_getClass(request):
-
     course_id = request.POST.get('course_id')
 
-    tcc = TblCourseClass.objects.filter(
-        course_id=course_id
-    )
-    
-    res = []
-    for t in tcc:
-        tmp = {}
-        tmp['id'] = t.id
-        tmp['class_code'] = t.class_code
-        tmp['cert_type'] = t.cert_type
-        tmp['base_type'] = t.base_type
-        tmp['auth_type'] = t.auth_type
-        tmp['design_type'] = t.design_type
-        tmp['design_point'] = t.design_point
-        res.append(tmp)
-
-    return JsonResponse({'result': res})
+    qs = CourseClass.objects.filter(course__id=course_id)
+    return JsonResponse({
+        'result': [cls.as_dict() for cls in qs],
+    })
 
 
 def api_getProList(request):
+    course_class_id = request.POST.get('class_id')
 
-    class_id = request.POST.get('class_id')
+    course_class = get_object_or_404(CourseClass, id=course_class_id)
 
-    tcc = TblCourseClass.objects.get(
-        id=class_id
-    )
-    tc = TblCourse.objects.get(
-        id=tcc.course_id
-    )
+    main_professor = course_class.course.professor
+    sub_professor = course_class.professor
 
-    main_professor = tc.main_professor
-    sub_professor = tcc.sub_professor
-    
-    tpfm = TblProfessor.objects.get(
-        id=main_professor
-    )
-    tpfs = TblProfessor.objects.get(
-        id=sub_professor
-    )
-
-    res = [
-        {
-            'professor_type': tpfm.professor_type,
-            'professor_number': tpfm.professor_number,
-            'professor_name': tpfm.professor_name,
-            'department_name': tpfm.department_name,
-            'school_number': tpfm.school_number,
-            'email': tpfm.email,
-        },
-        {   
-            'professor_type': tpfs.professor_type,
-            'professor_number': tpfs.professor_number,
-            'professor_name': tpfs.professor_name,
-            'department_name': tpfs.department_name,
-            'school_number': tpfs.school_number,
-            'email': tpfs.email,
-        }
+    professor_list = [
+        main_professor.as_dict(),
+        sub_professor.as_dict(),
     ]
 
-    return JsonResponse({'result': res})
+    return JsonResponse({'result': professor_list})
 
 
 def api_getTime(request):
+    course_class_id = request.POST.get('class_id')
+    course_class = get_object_or_404(CourseClass, id=course_class_id)
 
-    class_id = request.POST.get('class_id')
+    qs = course_class.coursesubject_set.all()
 
-    tcs = TblCourseSubject.objects.filter(
-        class_id = class_id
-    )
+    result = [subject.as_dict() for subject in qs]
+    content = course_class.content
 
-    res = []
-    for t in tcs:
-        tmp = {}
-        tmp['grade'] = t.grade
-        tmp['subject_type'] = t.subject_type
-        tmp['subject_code'] = t.subject_code
-        tmp['subject_name'] = t.subject_name
-        tmp['subject_day'] = t.subject_day
-        tmp['full_time'] = t.start_time + ' ~ ' + t.end_time
-        tmp['building'] = t.building
-        tmp['class_name'] = t.class_name
-        tmp['make_department'] = t.make_department
-        tmp['subject_point'] = t.subject_point
-        res.append(tmp)
-
-    content = TblCourseClass.objects.get(
-        id = class_id
-    ).content
-
-    return JsonResponse({'result': res, 'content': content})
+    return JsonResponse({'result': result, 'content': content})
 
 
 def api_getCheck(request):
+    course_class_id = request.POST.get('class_id')
+    course_class = get_object_or_404(CourseClass, id=course_class_id)
 
-    class_id = request.POST.get('class_id')
+    qs = course_class.coursetarget_set.all()
 
-    tct = TblCourseTarget.objects.filter(
-        class_id = class_id
-    )
+    result = [
+        subject.as_dict(cnt=cnt)
+        for cnt, subject in enumerate(qs, 1)]
 
-    res = []
-    cnt = 1
-    for t in tct:
-        tmp = {}
-        tmp['cnt'] = str(cnt)
-        tmp['id'] = t.id
-        tmp['target_name'] = t.target_name
-        tmp['core_point'] = t.core_point
-        tmp['e_course'] = t.e_course
-        tmp['e_discussion'] = t.e_discussion
-        tmp['e_experiment'] = t.e_experiment
-        tmp['e_online'] = t.e_online
-        tmp['e_presentation'] = t.e_presentation
-        tmp['e_art'] = t.e_art
-        tmp['e_seminar'] = t.e_seminar
-        tmp['e_study'] = t.e_study
-        tmp['e_design'] = t.e_design
-        tmp['e_other'] = t.e_other
-        tmp['w_attendance'] = t.w_attendance
-        tmp['w_middle_exam'] = t.w_middle_exam
-        tmp['w_final_exam'] = t.w_final_exam
-        tmp['w_project'] = t.w_project
-        tmp['w_quiz'] = t.w_quiz
-        tmp['w_presentation'] = t.w_presentation
-        tmp['w_report'] = t.w_report
-        tmp['w_practical'] = t.w_practical
-        tmp['w_other'] = t.w_other
-        res.append(tmp)
-        cnt += 1
-    
-    return JsonResponse({'result': res})
+    return JsonResponse({'result': result})
 
 
 def api_getWeek(request):
-
-    class_id = request.POST.get('class_id')
-
-    tcw = TblCourseWeek.objects.get(
-        class_id = class_id
-    )
-
-    res = [
-        {
-            'week1_course': tcw.week1_course,
-            'week2_course': tcw.week2_course,
-            'week3_course': tcw.week3_course,
-            'week4_course': tcw.week4_course,
-            'week5_course': tcw.week5_course,
-            'week6_course': tcw.week6_course,
-            'week7_course': tcw.week7_course,
-            'week8_course': tcw.week8_course,
-            'week9_course': tcw.week9_course,
-            'week10_course': tcw.week10_course,
-            'week11_course': tcw.week11_course,
-            'week12_course': tcw.week12_course,
-            'week13_course': tcw.week13_course,
-            'week14_course': tcw.week14_course,
-            'week15_course': tcw.week15_course,
-            'week16_course': tcw.week16_course,
-            'week1_practice': tcw.week1_practice,
-            'week2_practice': tcw.week2_practice,
-            'week3_practice': tcw.week3_practice,
-            'week4_practice': tcw.week4_practice,
-            'week5_practice': tcw.week5_practice,
-            'week6_practice': tcw.week6_practice,
-            'week7_practice': tcw.week7_practice,
-            'week8_practice': tcw.week8_practice,
-            'week9_practice': tcw.week9_practice,
-            'week10_practice': tcw.week10_practice,
-            'week11_practice': tcw.week11_practice,
-            'week12_practice': tcw.week12_practice,
-            'week13_practice': tcw.week13_practice,
-            'week14_practice': tcw.week14_practice,
-            'week15_practice': tcw.week15_practice,
-            'week16_practice': tcw.week16_practice
-        }
-    ]
-    return JsonResponse({'result': res})
+    course_class_id = request.POST.get('class_id')
+    course_class = get_object_or_404(CourseClass, id=course_class_id)
+    result = course_class.courseweek.as_dict()
+    return JsonResponse({'result': [result]})
 
 
 def api_getTwoTab(request):
+    course_class_id = request.POST.get('class_id')
+    course_class = get_object_or_404(CourseClass, id=course_class_id)
+    qs = course_class.coursecore_set.all()
+    result = [
+        core.as_dict(cnt=cnt)
+        for cnt, core in enumerate(qs, 1)]
 
-    class_id = request.POST.get('class_id')
-
-    tcc = TblCourseClass.objects.get(
-        id = class_id
-    )
-    pre_content = tcc.pre_content
-    test_content = tcc.test_content
-
-    tcp = TblCoursePercent.objects.get(
-        class_id = class_id
-    )
-    left_list = {
-        'task': tcp.task,
-        'final_exam': tcp.final_exam,
-        'other': tcp.other,
-        'presentation': tcp.presentation,
-        'report': tcp.report,
-        'practical': tcp.practical,
-        'middle_exam': tcp.middle_exam,
-        'attendance': tcp.attendance,
-        'quiz': tcp.quiz
-    }
-    
-    tcb = TblCourseBook.objects.get(
-        class_id = class_id
-    )
-    right_list = {
-        'consult_time': tcb.consult_time,
-        'pre_knowledge': tcb.pre_knowledge,
-        'main_note': tcb.main_note,
-        'sub_note1': tcb.sub_note1,
-        'sub_note2': tcb.sub_note2,
-        'sub_note3': tcb.sub_note3,
-        'ref_web': tcb.ref_web,
-        'select_book': tcb.select_book
-    }
-
-    tcc = TblCourseCore.objects.filter(
-        class_id = class_id
-    )
-    res = []
-    cnt = 1
-    for t in tcc:
-        tmp = {}
-        tmp['id'] = cnt
-        tmp['content'] = t.content
-        tmp['percnet'] = t.percnet
-        res.append(tmp)
-        cnt += 1
-    
     return JsonResponse({
-        'pre_content': pre_content,
-        'test_content': test_content,
-        'left_list': left_list,
-        'right_list': right_list,
-        'bottom_list': res,
+        'pre_content': course_class.pre_content,
+        'test_content': course_class.test_content,
+        'left_list': course_class.coursepercent.as_dict(),
+        'right_list': course_class.coursebook.as_dict(),
+        'bottom_list': result,
     })
 
 
 def api_getFourTab(request):
+    course_class_id = request.POST.get('class_id')
+    course_class = get_object_or_404(CourseClass, id=course_class_id)
 
-    class_id = request.POST.get('class_id')
+    design_content = course_class.design_content
+    check_content = course_class.check_content
+    report_content = course_class.report_content
+    exe_content = course_class.exe_content
 
-    tcc = TblCourseClass.objects.get(
-        id = class_id
-    )
-    design_content = tcc.design_content
-    check_content = tcc.check_content
-    report_content = tcc.report_content
-    exe_content = tcc.exe_content
+    qs = course_class.coursecondition_set.all()
+    condition_list = [cond.as_dict() for cond in qs]
 
-    tcc2 = TblCourseCondition.objects.filter(
-        class_id = class_id
-    )
-    condition_list = []
-    for x in tcc2:
-        tmp = {}
-        tmp['id'] = x.id
-        tmp['c_code'] = x.c_code
-        tmp['c_method'] = x.c_method
-        tmp['c_content'] = x.c_content
-        condition_list.append(tmp)
-
-    tcs = TblCourseStruct.objects.filter(
-        class_id = class_id
-    )
-    struct_list = []
-    for x in tcs:
-        tmp = {}
-        tmp['id'] = x.id
-        tmp['s_code'] = x.s_code
-        tmp['s_method'] = x.s_method
-        tmp['s_content'] = x.s_content
-        struct_list.append(tmp)
+    qs = course_class.coursestruct_set.all()
+    struct_list = [struct.as_dict() for struct in qs]
 
     return JsonResponse({
-        'design_content': design_content,
-        'check_content': check_content,
-        'report_content': report_content,
-        'exe_content': exe_content,
+        'design_content': course_class.design_content,
+        'check_content': course_class.check_content,
+        'report_content': course_class.report_content,
+        'exe_content': course_class.exe_content,
         'condition_list': condition_list,
         'struct_list': struct_list
     })
@@ -363,7 +155,7 @@ def api_saveData(request):
         dump_truck = rjson['dump_truck']
         one_top = rjson['one_top']
         select_id = rjson['select_id']
-        
+
         print('-----------------------------')
         print('dump_truck -> ', dump_truck)
         print('one_top -> ', one_top)
@@ -371,7 +163,7 @@ def api_saveData(request):
         print('tabIdx -> ', tabIdx)
         print('-----------------------------')
 
-        tcc = TblCourseClass.objects.get(id=select_id)
+        tcc = CourseClass.objects.get(id=select_id)
 
         print('tcc.content before-> ', tcc.content)
         tcc.content = one_top
@@ -380,7 +172,7 @@ def api_saveData(request):
 
         for d in dump_truck:
             print('d -> ', d)
-            tct = TblCourseTarget.objects.get(id=d['id'])
+            tct = CourseTarget.objects.get(id=d['id'])
             tct.e_course = boolToYN(d['x1'])
             tct.e_discussion = boolToYN(d['x2'])
             tct.e_experiment = boolToYN(d['x3'])
@@ -447,12 +239,12 @@ def api_saveData(request):
         print('t16 -> ', t16)
         print('t17 -> ', t17)
 
-        tcc = TblCourseClass.objects.get(id=select_id)
+        tcc = CourseClass.objects.get(id=select_id)
         tcc.pre_content = two_top
         tcc.test_content = two_bot
         tcc.save()
 
-        tcp = TblCoursePercent.objects.get(class_id=select_id)
+        tcp = CoursePercent.objects.get(class_id=select_id)
         tcp.task = t1
         tcp.final_exam = t2
         tcp.other = t3
@@ -464,7 +256,7 @@ def api_saveData(request):
         tcp.quiz = t9
         tcp.save()
 
-        tcb = TblCourseBook.objects.get(class_id=select_id)
+        tcb = CourseBook.objects.get(class_id=select_id)
         tcb.consult_time = t10
         tcb.pre_knowledge = t11
         tcb.main_note = t12
@@ -484,7 +276,7 @@ def api_saveData(request):
         print('wc_list -> ', wc_list)
         print('wp_list -> ', wp_list)
 
-        tcw = TblCourseWeek.objects.get(class_id=select_id)
+        tcw = CourseWeek.objects.get(class_id=select_id)
         tcw.week1_course = wc_list[0]
         tcw.week2_course = wc_list[1]
         tcw.week3_course = wc_list[2]
@@ -531,7 +323,7 @@ def api_saveData(request):
 
         for d in dump_truck1:
             print('d -> ', d)
-            tcc = TblCourseCondition.objects.get(id=d['id'])
+            tcc = CourseCondition.objects.get(id=d['id'])
             tcc.c_code = d['xx1']
             tcc.c_method = d['xx2']
             tcc.c_content = d['xx3']
@@ -539,13 +331,13 @@ def api_saveData(request):
 
         for d in dump_truck2:
             print('d -> ', d)
-            tcs = TblCourseStruct.objects.get(id=d['id'])
+            tcs = CourseStruct.objects.get(id=d['id'])
             tcs.s_code = d['xxx1']
             tcs.s_method = d['xxx2']
             tcs.s_content = d['xxx3']
             tcs.save()
 
-        tcc2 = TblCourseClass.objects.get(id=select_id)
+        tcc2 = CourseClass.objects.get(id=select_id)
         tcc2.design_content = fff1
         tcc2.check_content = fff2
         tcc2.report_content = fff3
