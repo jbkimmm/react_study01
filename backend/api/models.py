@@ -1,15 +1,8 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
 class Course(models.Model):
-    course_year = models.CharField(max_length=10)
+    year = models.CharField(max_length=10, db_column='course_year')
     season = models.CharField(max_length=10)
     display_name = models.CharField(max_length=255)
     cert_type = models.CharField(max_length=10)
@@ -17,11 +10,11 @@ class Course(models.Model):
 
     class Meta:
         db_table = 'tbl_course'
-        managed = False
 
     def as_dict(self):
         return {
-            'id': self.id,
+            'pk': self.pk,
+            'key': self.pk,
             'display_name': self.display_name,
         }
 
@@ -39,10 +32,11 @@ class CourseBook(models.Model):
 
     class Meta:
         db_table = 'tbl_course_book'
-        managed = False
 
     def as_dict(self):
         return {
+            'pk': self.pk,
+            'key': self.pk,
             'consult_time': self.consult_time,
             'pre_knowledge': self.pre_knowledge,
             'main_note': self.main_note,
@@ -73,18 +67,25 @@ class CourseClass(models.Model):
 
     class Meta:
         db_table = 'tbl_course_class'
-        managed = False
 
-    def as_dict(self):
-        return {
-            'id': self.id,
+    def as_dict(self, **kwargs):
+        return dict({
+            'pk': self.pk,
+            'key': self.pk,
             'class_code': self.class_code,
             'cert_type': self.cert_type,
             'base_type': self.base_type,
             'auth_type': self.auth_type,
             'design_type': self.design_type,
             'design_point': self.design_point,
-        }
+            'content': self.content,
+            'pre_content': self.pre_content,
+            'test_content': self.test_content,
+            'design_content': self.design_content,
+            'check_content': self.check_content,
+            'report_content': self.report_content,
+            'exe_content': self.exe_content,
+        }, **kwargs)
 
 
 class CourseCondition(models.Model):
@@ -95,11 +96,11 @@ class CourseCondition(models.Model):
 
     class Meta:
         db_table = 'tbl_course_condition'
-        managed = False
 
     def as_dict(self):
         return {
-            'id': self.id,
+            'pk': self.pk,
+            'key': self.pk,
             'c_code': self.c_code,
             'c_method': self.c_method,
             'c_content': self.c_content,
@@ -110,16 +111,17 @@ class CourseCondition(models.Model):
 class CourseCore(models.Model):
     course_class = models.ForeignKey('CourseClass', db_column='class_id', on_delete=models.CASCADE)
     content = models.CharField(max_length=255, blank=True, null=True)
-    percnet = models.CharField(max_length=100, blank=True, null=True)  # FIXME: 오타?
+    percent = models.CharField(max_length=100, blank=True, null=True, db_column='percnet')  # FIXME: 오타?
 
     class Meta:
         db_table = 'tbl_course_core'
-        managed = False
 
     def as_dict(self, **kwargs):
         return dict({
+            'pk': self.pk,
+            'key': self.pk,
             'content': self.content,
-            'percnet': self.percnet,
+            'percent': self.percent,
         }, **kwargs)
 
 
@@ -137,10 +139,11 @@ class CoursePercent(models.Model):
 
     class Meta:
         db_table = 'tbl_course_percent'
-        managed = False
 
     def as_dict(self):
         return {
+            'pk': self.pk,
+            'key': self.pk,
             'task': self.task,
             'final_exam': self.final_exam,
             'other': self.other,
@@ -161,11 +164,11 @@ class CourseStruct(models.Model):
 
     class Meta:
         db_table = 'tbl_course_struct'
-        managed = False
 
     def as_dict(self):
         return {
-            'id': self.id,
+            'pk': self.pk,
+            'key': self.pk,
             's_code': self.s_code,
             's_method': self.s_method,
             's_content': self.s_content,
@@ -188,10 +191,11 @@ class CourseSubject(models.Model):
 
     class Meta:
         db_table = 'tbl_course_subject'
-        managed = False
 
     def as_dict(self):
         return {
+            'pk': self.pk,
+            'key': self.pk,
             'grade': self.grade,
             'subject_type': self.subject_type,
             'subject_code': self.subject_code,
@@ -231,11 +235,11 @@ class CourseTarget(models.Model):
 
     class Meta:
         db_table = 'tbl_course_target'
-        managed = False
 
     def as_dict(self, **kwargs):
         return dict({
-            'id': self.id,
+            'pk': self.pk,
+            'key': self.pk,
             'target_name': self.target_name,
             'core_point': self.core_point,
             'e_course': self.e_course,
@@ -297,7 +301,6 @@ class CourseWeek(models.Model):
 
     class Meta:
         db_table = 'tbl_course_week'
-        managed = False
 
     def as_dict(self):
         obj = {}
@@ -313,21 +316,22 @@ class CourseWeek(models.Model):
 
 class Professor(models.Model):
     professor_type = models.CharField(max_length=10)
-    professor_number = models.CharField(max_length=255)
-    professor_name = models.CharField(max_length=255)
+    number = models.CharField(max_length=255, db_column='professor_number')
+    name = models.CharField(max_length=255, db_column='professor_name')
     department_name = models.CharField(max_length=255)
     school_number = models.CharField(max_length=255, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         db_table = 'tbl_professor'
-        managed = False
 
     def as_dict(self):
         return {
+            'pk': self.pk,
+            'key': self.pk,
             'professor_type': self.professor_type,
-            'professor_number': self.professor_number,
-            'professor_name': self.professor_name,
+            'number': self.number,
+            'name': self.name,
             'department_name': self.department_name,
             'school_number': self.school_number,
             'email': self.email,

@@ -56,14 +56,17 @@ def api_getProList(request, class_id):
 
 
 def api_getTime(request, class_id):
-    course_class = get_object_or_404(CourseClass, id=class_id)
+    klass = get_object_or_404(CourseClass, id=class_id)
 
-    qs = course_class.coursesubject_set.all()
+    qs = klass.coursesubject_set.all()
 
     result = [subject.as_dict() for subject in qs]
-    content = course_class.content
+    content = klass.content
 
-    return JsonResponse({'result': result, 'content': content})
+    return JsonResponse({
+        'result': result,
+        'content': content,
+    })
 
 
 def api_getCheck(request, class_id):
