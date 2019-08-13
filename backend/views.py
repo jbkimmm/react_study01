@@ -1,11 +1,10 @@
 import json
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_protect
-from django.db import connections
+from django.http import JsonResponse
+from backend.models import (
+    Professor, CourseClass, CoursePercent, CourseBook, CourseWeek, CourseCondition, CourseStruct
+)
 
-from backend.djangoapps.common.views import *
-from backend.models import *
 
 def index(request):
     context = {}
@@ -145,79 +144,63 @@ def boolToYN(n):
 def api_saveData(request):
 
     try:
-        rjson = json.loads(request.body)
+        request.json = json.loads(request.body)
     except BaseException:
         return JsonResponse({"result": 800})  # json 로드 오류
 
-    tabIdx = rjson['tabIdx']
+    tabIdx = request.json['tabIdx']
 
     if tabIdx == 1:
-        dump_truck = rjson['dump_truck']
-        one_top = rjson['one_top']
-        select_id = rjson['select_id']
+        dump_truck = request.json['dump_truck']
+        one_top = request.json['one_top']
+        select_id = request.json['select_id']
 
-        print('-----------------------------')
-        print('dump_truck -> ', dump_truck)
-        print('one_top -> ', one_top)
-        print('select_id -> ', select_id)
-        print('tabIdx -> ', tabIdx)
-        print('-----------------------------')
+        CourseClass.objects.filter(pk=select_id).update(
+            content=one_top
+        )
 
-        tcc = CourseClass.objects.get(id=select_id)
+        for row in dump_truck:
+            pk = row['id']
+            field_names = (
+                'e_course', 'e_discussion', 'e_experiment', 'e_online', 'e_presentation',
+                'e_art', 'e_seminar', 'e_study', 'e_design', 'e_other', 'w_attendance',
+                'w_middle_exam', 'w_final_exam', 'w_project', 'w_quiz', 'w_presentation',
+                'w_report', 'w_practical', 'w_other',
+            )
 
-        print('tcc.content before-> ', tcc.content)
-        tcc.content = one_top
-        print('tcc.content after-> ', tcc.content)
-        tcc.save()
+            course_target = get_object_or_404(CourseTarget, pk=d['id'])
+            for i in range(1, 20):
+                src_field_name = 'x{}'.format(i)
+                dst_field_name = field_names[i-1]
+                attr = 'Y' if row[src_field_name] else 'N'
+                setattr(course_target, dst_field_name, attr)
+            course_target.save()
 
-        for d in dump_truck:
-            print('d -> ', d)
-            tct = CourseTarget.objects.get(id=d['id'])
-            tct.e_course = boolToYN(d['x1'])
-            tct.e_discussion = boolToYN(d['x2'])
-            tct.e_experiment = boolToYN(d['x3'])
-            tct.e_online = boolToYN(d['x4'])
-            tct.e_presentation = boolToYN(d['x5'])
-            tct.e_art = boolToYN(d['x6'])
-            tct.e_seminar = boolToYN(d['x7'])
-            tct.e_study = boolToYN(d['x8'])
-            tct.e_design = boolToYN(d['x9'])
-            tct.e_other = boolToYN(d['x10'])
-            tct.w_attendance = boolToYN(d['x11'])
-            tct.w_middle_exam = boolToYN(d['x12'])
-            tct.w_final_exam = boolToYN(d['x13'])
-            tct.w_project = boolToYN(d['x14'])
-            tct.w_quiz = boolToYN(d['x15'])
-            tct.w_presentation = boolToYN(d['x16'])
-            tct.w_report = boolToYN(d['x17'])
-            tct.w_practical = boolToYN(d['x18'])
-            tct.w_other = boolToYN(d['x19'])
-            tct.save()
     elif tabIdx == 2:
-        select_id = rjson['select_id']
-        two_top = rjson['two_top']
-        two_bot = rjson['two_bot']
-        t1 = rjson['t1']
-        t2 = rjson['t2']
-        t3 = rjson['t3']
-        t4 = rjson['t4']
-        t5 = rjson['t5']
-        t6 = rjson['t6']
-        t7 = rjson['t7']
-        t8 = rjson['t8']
-        t9 = rjson['t9']
-        t10 = rjson['t10']
-        t11 = rjson['t11']
-        t12 = rjson['t12']
-        t13 = rjson['t13']
-        t14 = rjson['t14']
-        t15 = rjson['t15']
-        t16 = rjson['t16']
-        t17 = rjson['t17']
+        select_id = request.json['select_id']
+        two_top = request.json['two_top']
+        two_bot = request.json['two_bot']
+        t1 = request.json['t1']
+        t2 = request.json['t2']
+        t3 = request.json['t3']
+        t4 = request.json['t4']
+        t5 = request.json['t5']
+        t6 = request.json['t6']
+        t7 = request.json['t7']
+        t8 = request.json['t8']
+        t9 = request.json['t9']
+        t10 = request.json['t10']
+        t11 = request.json['t11']
+        t12 = request.json['t12']
+        t13 = request.json['t13']
+        t14 = request.json['t14']
+        t15 = request.json['t15']
+        t16 = request.json['t16']
+        t17 = request.json['t17']
 
         result = 0
         for n in range(1, 10):
-            result += int(rjson['t' + str(n)])
+            result += int(request.json['t' + str(n)])
 
         if result != 100:
             return JsonResponse({'result': 400})
@@ -268,9 +251,9 @@ def api_saveData(request):
         tcb.save()
 
     elif tabIdx == 3:
-        select_id = rjson['select_id']
-        wc_list = rjson['wc_list']
-        wp_list = rjson['wp_list']
+        select_id = request.json['select_id']
+        wc_list = request.json['wc_list']
+        wp_list = request.json['wp_list']
 
         print('select_id -> ', select_id)
         print('wc_list -> ', wc_list)
@@ -313,13 +296,13 @@ def api_saveData(request):
 
         tcw.save()
     elif tabIdx == 4:
-        select_id = rjson['select_id']
-        fff1 = rjson['fff1']
-        fff2 = rjson['fff2']
-        fff3 = rjson['fff3']
-        fff4 = rjson['fff4']
-        dump_truck1 = rjson['dump_truck1']
-        dump_truck2 = rjson['dump_truck2']
+        select_id = request.json['select_id']
+        fff1 = request.json['fff1']
+        fff2 = request.json['fff2']
+        fff3 = request.json['fff3']
+        fff4 = request.json['fff4']
+        dump_truck1 = request.json['dump_truck1']
+        dump_truck2 = request.json['dump_truck2']
 
         for d in dump_truck1:
             print('d -> ', d)
