@@ -1,6 +1,6 @@
-<%include file="../common/head.html"/>
+{% include "head.html" %}
 
-<%block name="css">
+{% block css %}
 <style>
 .login-container {
   min-width: 240px !important;
@@ -35,7 +35,7 @@
   font-size: 16px;
 }
 </style>
-</%block>
+{% endblock %}
 
 <div class="login-container">
   <div class="common-title">Sample Admin</div>
@@ -54,4 +54,6 @@
   </div>
 </div>
 
-<%block name="js"></%block>
+{% block js %}
+{% endblock %}
+

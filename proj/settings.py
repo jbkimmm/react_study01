@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -28,29 +28,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'main.urls'
+ROOT_URLCONF = 'proj.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'djangomako.backends.MakoBackend',
-        'NAME': 'mako',
-        'DIRS': [
-            BASE_DIR + '/backend/templates/',
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-    {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'NAME': 'django',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'proj', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,7 +49,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'main.wsgi.application'
+WSGI_APPLICATION = 'proj.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -87,7 +73,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-DATABASAE_OPTIONS = {'charset':'utf8'}
 LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
 
@@ -95,8 +80,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_ROOT = BASE_DIR + '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR + '/backend/static/'
+    os.path.join(BASE_DIR, 'proj', 'static'),
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

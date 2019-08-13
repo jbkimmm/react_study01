@@ -1,0 +1,30 @@
+<html>
+<head>
+    {% include "head.html" %}
+    {% include "header.html" %}
+    {% include "menu.html" %}
+    {% block css %}{% endblock %}
+</head>
+<body>
+<section style="width: 100%">
+<div id="content" class="app-content box-shadow-0" role="main">
+  <div class="content-main" id="content-main">
+    <div class="padding">
+      <div class="box">
+        <div class="box-header light lt">
+          <h3>{% block title %}{% endblock %}</h3>
+          <small>{% block subtitle %}{% endblock %}</small>
+        </div>
+        <div class="box-body">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+</body>
+    {% include "jquery.html" %}
+    {% block js %}{% endblock %}
+</html>
+

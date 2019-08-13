@@ -1,27 +1,25 @@
 import json
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
-from backend.models import (
-    Professor, CourseClass, CoursePercent, CourseBook, CourseWeek, CourseCondition, CourseStruct
-)
+from .models import (
+    Professor, CourseClass, CoursePercent, CourseBook, CourseWeek, CourseCondition, CourseStruct,
+    CourseTarget)
 
 
 def index(request):
-    context = {}
-    return render(request, 'index/index.html', context)
+    return render(request, 'index/index.html')
 
 
-def api_getProName(request):
-    pro_num = request.POST.get('pro_num')
+def api_getProName(request, pro_num):
     prof = get_object_or_404(Professor, professor_number=pro_num)
     return JsonResponse({'result': prof.professor_name})
 
 
 def api_getCourse(request):
-    year = request.POST.get('year')
-    season = request.POST.get('season')
-    pro_num = request.POST.get('pro_num')
-    auth_type = request.POST.get('auth_type')
+    year = request.GET.get('year')
+    season = request.GET.get('season')
+    pro_num = request.GET.get('pro_num')
+    auth_type = request.GET.get('auth_type')
 
     professor = get_object_or_404(Professor, professor_number=pro_num)
 
@@ -36,19 +34,15 @@ def api_getCourse(request):
     })
 
 
-def api_getClass(request):
-    course_id = request.POST.get('course_id')
-
+def api_getClass(request, course_id):
     qs = CourseClass.objects.filter(course__id=course_id)
     return JsonResponse({
         'result': [cls.as_dict() for cls in qs],
     })
 
 
-def api_getProList(request):
-    course_class_id = request.POST.get('class_id')
-
-    course_class = get_object_or_404(CourseClass, id=course_class_id)
+def api_getProList(request, class_id):
+    course_class = get_object_or_404(CourseClass, id=class_id)
 
     main_professor = course_class.course.professor
     sub_professor = course_class.professor
@@ -61,9 +55,8 @@ def api_getProList(request):
     return JsonResponse({'result': professor_list})
 
 
-def api_getTime(request):
-    course_class_id = request.POST.get('class_id')
-    course_class = get_object_or_404(CourseClass, id=course_class_id)
+def api_getTime(request, class_id):
+    course_class = get_object_or_404(CourseClass, id=class_id)
 
     qs = course_class.coursesubject_set.all()
 
@@ -73,9 +66,8 @@ def api_getTime(request):
     return JsonResponse({'result': result, 'content': content})
 
 
-def api_getCheck(request):
-    course_class_id = request.POST.get('class_id')
-    course_class = get_object_or_404(CourseClass, id=course_class_id)
+def api_getCheck(request, class_id):
+    course_class = get_object_or_404(CourseClass, id=class_id)
 
     qs = course_class.coursetarget_set.all()
 
@@ -86,16 +78,14 @@ def api_getCheck(request):
     return JsonResponse({'result': result})
 
 
-def api_getWeek(request):
-    course_class_id = request.POST.get('class_id')
-    course_class = get_object_or_404(CourseClass, id=course_class_id)
+def api_getWeek(request, class_id):
+    course_class = get_object_or_404(CourseClass, id=class_id)
     result = course_class.courseweek.as_dict()
     return JsonResponse({'result': [result]})
 
 
-def api_getTwoTab(request):
-    course_class_id = request.POST.get('class_id')
-    course_class = get_object_or_404(CourseClass, id=course_class_id)
+def api_getTwoTab(request, class_id):
+    course_class = get_object_or_404(CourseClass, id=class_id)
     qs = course_class.coursecore_set.all()
     result = [
         core.as_dict(cnt=cnt)
@@ -110,9 +100,8 @@ def api_getTwoTab(request):
     })
 
 
-def api_getFourTab(request):
-    course_class_id = request.POST.get('class_id')
-    course_class = get_object_or_404(CourseClass, id=course_class_id)
+def api_getFourTab(request, class_id):
+    course_class = get_object_or_404(CourseClass, id=class_id)
 
     design_content = course_class.design_content
     check_content = course_class.check_content
@@ -141,8 +130,8 @@ def boolToYN(n):
     elif n == False:
         return 'N'
 
-def api_saveData(request):
 
+def api_saveData(request):
     try:
         request.json = json.loads(request.body)
     except BaseException:
@@ -168,7 +157,7 @@ def api_saveData(request):
                 'w_report', 'w_practical', 'w_other',
             )
 
-            course_target = get_object_or_404(CourseTarget, pk=d['id'])
+            course_target = get_object_or_404(CourseTarget, pk=pk)
             for i in range(1, 20):
                 src_field_name = 'x{}'.format(i)
                 dst_field_name = field_names[i-1]

@@ -1,6 +1,6 @@
-<%inherit file="../common/frame.html"/>
+{% extends "frame.html" %}
 
-<%block name="css">
+{% block css %}
 <style>
     .main-con{
     }
@@ -134,12 +134,12 @@
         text-align: center !important;
     }
 </style>
-</%block>
+{% endblock %}
 
-<%block name="title">교수계획표</%block>
-<%block name="subtitle">공학 교수계획표 관리</%block>
+{% block title %}교수계획표{% endblock %}
+{% block subtitle %}공학 교수계획표 관리{% endblock %}
 
-<%block name="content">
+{% block content %}
 <div class='main-con' id='vue'>
     <div class='aflex fz10'>
         <div class="form-group aitem fx05">
@@ -264,25 +264,25 @@
     </div>
 
     <!-- component start -->
-    <%include file="component1.html"/>
+    {% include "index/component1.html" %}
     <!-- component end -->
 
     <!-- component start -->
-    <%include file="component2.html"/>
+    {% include "index/component2.html" %}
     <!-- component end -->
 
     <!-- component start -->
-    <%include file="component3.html"/>
+    {% include "index/component3.html" %}
     <!-- component end -->
 
     <!-- component start -->
-    <%include file="component4.html"/>
+    {% include "index/component4.html" %}
     <!-- component end -->
     
 </div>
-</%block>
+{% endblock %}
 
-<%block name="js">
+{% block js %}
 <script>
 var app = new Vue({
     el: '#vue',
@@ -394,82 +394,60 @@ var app = new Vue({
 
         },
         loadTwo: function(){
-
-            var csrf_token = $('#csrf_token').val();
             var class_id = app.selectClassID;
 
-            $.post( "/api_getTwoTab", { 
-                csrfmiddlewaretoken: csrf_token, 
-                class_id: class_id
-            })
-            .done(function( data ) {
-                app.left_list = data.left_list;
-                app.right_list = data.right_list;
-                app.bottom_list = data.bottom_list;
-                app.pre_content = data.pre_content;
-                app.test_content = data.test_content;
-            });
+            $.get( "/api_getTwoTab/" + class_id)
+                .done(function( data ) {
+                    app.left_list = data.left_list;
+                    app.right_list = data.right_list;
+                    app.bottom_list = data.bottom_list;
+                    app.pre_content = data.pre_content;
+                    app.test_content = data.test_content;
+                });
 
         },
         loadThree: function(){
-
-            var csrf_token = $('#csrf_token').val();
             var class_id = app.selectClassID;
 
             console.log('class_id -> ', class_id);
 
-            $.post( "/api_getWeek", { 
-                csrfmiddlewaretoken: csrf_token, 
-                class_id: class_id
-            })
-            .done(function( data ) {
-                console.log('data.result -> ', data.result);
-                app.WeekItems = data.result[0];
-            });
+            $.get( "/api_getWeek/" + class_id)
+                .done(function( data ) {
+                    console.log('data.result -> ', data.result);
+                    app.WeekItems = data.result[0];
+                });
 
         },
         loadFour: function(){
-
-            var csrf_token = $('#csrf_token').val();
             var class_id = app.selectClassID;
 
             console.log('class_id -> ', class_id);
 
-            $.post( "/api_getFourTab", { 
-                csrfmiddlewaretoken: csrf_token, 
-                class_id: class_id
-            })
-            .done(function( data ) {
-                console.log('data -> ', data);
-                app.design_content = data.design_content;
-                app.check_content = data.check_content;
-                app.report_content = data.report_content;
-                app.exe_content = data.exe_content;
-                app.condition_list = data.condition_list;
-                app.struct_list = data.struct_list;
-            });
+            $.get( "/api_getFourTab/" + class_id)
+                .done(function( data ) {
+                    console.log('data -> ', data);
+                    app.design_content = data.design_content;
+                    app.check_content = data.check_content;
+                    app.report_content = data.report_content;
+                    app.exe_content = data.exe_content;
+                    app.condition_list = data.condition_list;
+                    app.struct_list = data.struct_list;
+                });
 
         },
         loadClassList: function(course_id){
-            console.log('course_id -> ', course_id);
-            var csrf_token = $('#csrf_token').val();
+            $.get('/api_getClass/' + course_id)
+                .done(function( data ) {
+                    console.log('data.result -> ', data.result);
+                    app.leftItems = data.result;
 
-            $.post( "/api_getClass", { 
-                csrfmiddlewaretoken: csrf_token, 
-                course_id: course_id
-            })
-            .done(function( data ) {
-                console.log('data.result -> ', data.result);
-                app.leftItems = data.result;
-
-                // init
-                app.rightItems = [];
-                app.timeItems = [];
-                $('.cl-group').css('background-color', '#ffffff');
-            });
+                    // init
+                    app.rightItems = [];
+                    app.timeItems = [];
+                    $('.cl-group').css('background-color', '#ffffff');
+                });
         },
         selectClass: function(e){
-            
             try{
                var class_id = e.currentTarget.id;
             } catch(e){
@@ -477,47 +455,35 @@ var app = new Vue({
                 var class_id = app.selectClassID
             }
             
-            var csrf_token = $('#csrf_token').val();
-
             $('.cl-group').css('background-color', '#ffffff');
             $('#' + class_id).css('background-color', '#dcedff');
 
             app.selectClassID = class_id;
 
-            $.post( "/api_getProList", {
-                csrfmiddlewaretoken: csrf_token, 
-                class_id: class_id
-            })
-            .done(function( data ) {
-                console.log('data -> ', data);
-                app.rightItems = data.result;
-            })
+            $.get( "/api_getProList/" + class_id)
+                .done(function( data ) {
+                    console.log('data -> ', data);
+                    app.rightItems = data.result;
+                });
 
-            $.post( "/api_getTime", {
-                csrfmiddlewaretoken: csrf_token, 
-                class_id: class_id
-            })
-            .done(function( data ) {
-                console.log('data -> ', data);
-                app.timeItems = data.result;
-                app.timeBotArea = data.content;
-            })
+            $.get( "/api_getTime/" + class_id)
+                .done(function( data ) {
+                    console.log('data -> ', data);
+                    app.timeItems = data.result;
+                    app.timeBotArea = data.content;
+                });
 
-            $.post( "/api_getCheck", {
-                csrfmiddlewaretoken: csrf_token, 
-                class_id: class_id
-            })
-            .done(function( data ) {
-                console.log('data -> ', data);
-                app.checkItems = data.result;
-            })
+            $.get( "/api_getCheck/" + class_id)
+                .done(function( data ) {
+                    console.log('data -> ', data);
+                    app.checkItems = data.result;
+                });
 
             app.loadTwo();
             app.loadThree();
             app.loadFour();
         },
         saveValue: function(){
-            var csrf_token = $('#csrf_token').val();
             var select_id = app.selectClassID;
             var tabIdx = app.tabIdx;
 
@@ -701,11 +667,6 @@ var app = new Vue({
             $.ajax('/api_saveData',{
                 'data': JSON.stringify(storn),
                 'type': 'POST',
-                'beforeSend': function(xhr, settings) {
-                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                },
-                'processData': false,
-                'contentType': 'application/json'
             })
             .done(function( data ) {
                 console.log('data -> ', data);
@@ -757,12 +718,8 @@ $(function(){
 
     // 교수명, 강좌명 로드
     $('#pro_num').focusout(function(){
-        var csrf_token = $('#csrf_token').val();
         var pro_num = $('#pro_num').val();
-        $.post( "/api_getProName", {
-             csrfmiddlewaretoken: csrf_token, 
-             pro_num: pro_num
-        })
+        $.get( "/api_getProName/" + pro_num)
         .done(function( data ) {
             $('#pro_name').val(data.result);
 
@@ -776,8 +733,7 @@ $(function(){
             console.log('pro_num -> ', pro_num);
             console.log('auth_type -> ', auth_type);
 
-            $.post( "/api_getCourse", {
-                csrfmiddlewaretoken: csrf_token, 
+            $.get( "/api_getCourse", {
                 year: year,
                 season: season,
                 pro_num: pro_num,
@@ -799,4 +755,5 @@ $(function(){
     });
 });
 </script>
-</%block>
+{% endblock %}
+

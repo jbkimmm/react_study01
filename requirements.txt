@@ -1,2 +1,1 @@
 django~=2.2.0
-djangomako==1.1.1

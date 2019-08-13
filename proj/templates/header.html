@@ -1,3 +1,5 @@
+{% load static %}
+
 <header class="app-header theme">
 	<div class="navbar navbar-expand-lg" style='background-color: #244294'>
 	  <a class="d-lg-none mx-2" data-toggle="modal" data-target="#aside">
@@ -5,13 +7,13 @@
 	  </a>
   	<a href="/index" class="navbar-brand">
   		<span class="hidden-folded d-inline logo-title">
-			<img src='/static/common/logo_w.png' style='width: 100px;'>
+			<img src="{% static 'logo_w.png' %}" style='width: 100px;'>
 		</span>
   	</a>
 	  <ul class="nav flex-row order-lg-2">
 	    <li class="dropdown d-flex align-items-center">
 	        <span class="avatar w-32">
-	          <img src="/static/common/boy.png" alt="...">
+	          <img src="{% static 'boy.png' %}" alt="...">
 	        </span>
 					<div class='info-box'>
 						<div class='info-box-top'>
