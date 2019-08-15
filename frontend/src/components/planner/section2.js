@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import TextArea from "antd/lib/input/TextArea";
-import {Row, Col, Table, InputNumber, Input, Form, Select} from "antd";
+import {Row, Col, Table, InputNumber, Input} from "antd";
 
 const Section2 = ({
   preContent,
@@ -49,7 +49,7 @@ const Section2 = ({
       { label: '관련웹', value: book.ref_web },
       { label: '지정도서', value: book.select_book},
     ];
-  });
+  }, [book]);
 
   const bookColumns = [
     { title: '교재', dataIndex: 'label' },

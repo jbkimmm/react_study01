@@ -1,6 +1,6 @@
 import React from "react";
 import {Layout, PageHeader} from "antd";
-import queryString from "query-string";
+// import queryString from "query-string";
 const {Content} = Layout;
 
 
