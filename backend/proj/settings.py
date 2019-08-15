@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'webpack_loader',
     'api',
     'app',
 ]
@@ -88,6 +89,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'proj', 'static'),
+    os.path.join(BASE_DIR, 'assets'),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -97,4 +99,11 @@ MEDIA_URL = '/media/'
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
 )
+
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'IGNORE': [],  # dev에서만?
+    },
+}
 
