@@ -71,10 +71,14 @@ const Section2 = ({
       학습평가방법 자율 입력 (선택사항)
       <Row gutter={24}>
         <Col span={12}>
-          <Table dataSource={percentDataSource} columns={percentColumns} pagination={false} />
+          <Table dataSource={percentDataSource}
+                 columns={percentColumns}
+                 pagination={false} />
         </Col>
         <Col span={12}>
-          <Table dataSource={bookDataSource} columns={bookColumns} pagination={false} />
+          <Table dataSource={bookDataSource}
+                 columns={bookColumns}
+                 pagination={false} />
         </Col>
       </Row>
 
@@ -82,7 +86,9 @@ const Section2 = ({
       <TextArea value={testContent} />
 
       핵심역량 (학습성과)
-      <Table dataSource={coreList} columns={coreColumns} pagination={false} />
+      <Table dataSource={coreList}
+             columns={coreColumns}
+             pagination={false} />
     </>
   );
 };

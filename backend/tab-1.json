@@ -1,0 +1,51 @@
+{
+    "select_id": "1",
+    "tabIdx": 1,
+    "dump_truck": [
+        {
+            "id": "50",
+            "x1": true,
+            "x2": true,
+            "x3": false,
+            "x4": false,
+            "x5": false,
+            "x6": false,
+            "x7": false,
+            "x8": false,
+            "x9": false,
+            "x10": false,
+            "x11": false,
+            "x12": true,
+            "x13": false,
+            "x14": false,
+            "x15": false,
+            "x16": false,
+            "x17": false,
+            "x18": false,
+            "x19": false
+        },
+        {
+            "id": "63",
+            "x1": true,
+            "x2": true,
+            "x3": true,
+            "x4": true,
+            "x5": true,
+            "x6": true,
+            "x7": true,
+            "x8": true,
+            "x9": true,
+            "x10": true,
+            "x11": true,
+            "x12": true,
+            "x13": true,
+            "x14": true,
+            "x15": true,
+            "x16": true,
+            "x17": true,
+            "x18": true,
+            "x19": true
+        }
+    ],
+    "one_top": "www"
+}

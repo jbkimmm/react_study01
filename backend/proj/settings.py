@@ -100,10 +100,3 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
 )
 
-
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'IGNORE': [],  # dev에서만?
-    },
-}
-

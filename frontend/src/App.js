@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, NavLink} from "react-router-dom";
 import {Icon, Menu, Layout} from "antd";
 import "./App.css";
 import logo from "./assets/logo_w.png";
+import ProfessorList from "./components/professor";
 import Planner from "./components/planner";
 import Home from "./components/home";
 
@@ -27,7 +28,13 @@ const App = () => {
               <img src={logo} style={{ padding: '10px' }} alt="logo" />
             </NavLink>
           </div>
-          <Menu theme="dark" defaultSelectedKeys={['menu-planner']} mode="inline">
+          <Menu theme="dark" defaultSelectedKeys={['menu-professor']} mode="inline">
+          <Menu.Item key="menu-professor">
+              <NavLink to="/professor">
+                <Icon type="user" />
+                <span className="nav-text">교수리스트</span>
+              </NavLink>
+            </Menu.Item>
             <Menu.Item key="menu-planner">
               <NavLink to="/planner">
                 <Icon type="table" />
@@ -55,7 +62,9 @@ const App = () => {
         </Sider>
         <Layout>
           <Route path="/" exact component={Home} />
+          <Route path="/professor" exact component={ProfessorList} />
           <Route path="/planner" component={Planner} />
+
           {/*<Header style={{ background: '#fff', padding: 0 }} />*/}
           {/*<Content style={{ margin: '0 16px' }}>*/}
           {/*  <Breadcrumb style={{ margin: '16px 0' }}>*/}

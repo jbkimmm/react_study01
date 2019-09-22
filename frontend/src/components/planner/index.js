@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Breadcrumb, Button, Col, Form, Layout, PageHeader, Row, Select, Tabs} from "antd";
+import {Alert, Breadcrumb, Button, Col, Form, Layout, PageHeader, Row, Select, Tabs} from "antd";
 import ProfessorSelect from "./professor_select";
 import KlassTable from "./klass_table";
 import SubjectSelect from "./subject_select";
@@ -73,30 +73,38 @@ const Planner = () => {
             </Col>
           </Row>
 
-          <Tabs defaultActiveKey="1" type="card">
-            <Tabs.TabPane tab="교과목 기본정보" key="1">
-              <Section1 subjectList={klass ? klass.subject_list : []}
-                        klassContent={klass ? klass.content : ''}
-                        targetList={klass ? klass.target_list : []}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="학습성과 / 학습평가방법 / 강의정보" key="2">
-              <Section2 preContent={klass ? klass.pre_content : ''}
-                        testContent={klass ? klass.test_content : ''}
-                        percent={klass ? klass.percent : null}
-                        book={klass ? klass.book : null}
-                        coreList={klass ? klass.core_list : []}
-              />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="주별 계획" key="3">
-              TODO: Content of Tab Pane 3
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="TERM PROJECT" key="4" disabled={true}>
-              TODO: Content of Tab Pane 4
-            </Tabs.TabPane>
-          </Tabs>
+          {!klass &&
+              <Alert message="분반을 선택해주세요." type="warning" />
+          }
 
-          <Button type="primary" onClick={() => alert("미구현")}>저장하기</Button>
+          {klass &&
+              <>
+                <Tabs defaultActiveKey="1" type="card">
+                  <Tabs.TabPane tab="교과목 기본정보" key="1">
+                    <Section1 subjectList={klass ? klass.subject_list : []}
+                              klassContent={klass ? klass.content : ''}
+                              targetList={klass ? klass.target_list : []}
+                    />
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="학습성과 / 학습평가방법 / 강의정보" key="2">
+                    <Section2 preContent={klass ? klass.pre_content : ''}
+                              testContent={klass ? klass.test_content : ''}
+                              percent={klass ? klass.percent : null}
+                              book={klass ? klass.book : null}
+                              coreList={klass ? klass.core_list : []}
+                    />
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="주별 계획" key="3">
+                    TODO: Content of Tab Pane 3
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="TERM PROJECT" key="4" disabled={true}>
+                    TODO: Content of Tab Pane 4
+                  </Tabs.TabPane>
+                </Tabs>
+
+                <Button type="primary" onClick={() => alert("미구현")}>저장하기</Button>
+              </>
+          }
         </div>
       </Content>
     </>

@@ -1,10 +1,13 @@
 import json
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from api.forms import CourseTargetForm, CoursePercentForm, CourseBookForm, CourseWeekForm
+from api.forms import CourseConditionForm, CourseStructForm, CourseClassForm
 from .models import (
     Professor, CourseClass, CoursePercent, CourseBook, CourseWeek, CourseCondition, CourseStruct,
     CourseTarget)
-
 
 def index(request):
     return render(request, 'index/index.html')
@@ -134,6 +137,7 @@ def boolToYN(n):
         return 'N'
 
 
+@csrf_exempt
 def api_saveData(request):
     try:
         request.json = json.loads(request.body)
@@ -151,96 +155,35 @@ def api_saveData(request):
             content=one_top
         )
 
-        for row in dump_truck:
-            pk = row['id']
-            field_names = (
-                'e_course', 'e_discussion', 'e_experiment', 'e_online', 'e_presentation',
-                'e_art', 'e_seminar', 'e_study', 'e_design', 'e_other', 'w_attendance',
-                'w_middle_exam', 'w_final_exam', 'w_project', 'w_quiz', 'w_presentation',
-                'w_report', 'w_practical', 'w_other',
-            )
-
-            course_target = get_object_or_404(CourseTarget, pk=pk)
-            for i in range(1, 20):
-                src_field_name = 'x{}'.format(i)
-                dst_field_name = field_names[i-1]
-                attr = 'Y' if row[src_field_name] else 'N'
-                setattr(course_target, dst_field_name, attr)
-            course_target.save()
+        # 교과목 목표별 교육방법 및 평가방법 수정
+        for data in dump_truck:
+            pk = data.pop('id')
+            instance = get_object_or_404(CourseTarget, pk=pk)
+            form = CourseTargetForm(data, instance=instance)
+            print(form.is_valid())
+            if form.is_valid():
+                form.save()
 
     elif tabIdx == 2:
         select_id = request.json['select_id']
-        two_top = request.json['two_top']
-        two_bot = request.json['two_bot']
-        t1 = request.json['t1']
-        t2 = request.json['t2']
-        t3 = request.json['t3']
-        t4 = request.json['t4']
-        t5 = request.json['t5']
-        t6 = request.json['t6']
-        t7 = request.json['t7']
-        t8 = request.json['t8']
-        t9 = request.json['t9']
-        t10 = request.json['t10']
-        t11 = request.json['t11']
-        t12 = request.json['t12']
-        t13 = request.json['t13']
-        t14 = request.json['t14']
-        t15 = request.json['t15']
-        t16 = request.json['t16']
-        t17 = request.json['t17']
-
-        result = 0
-        for n in range(1, 10):
-            result += int(request.json['t' + str(n)])
-
-        if result != 100:
-            return JsonResponse({'result': 400})
-
-        print('t1 -> ', t1)
-        print('t2 -> ', t2)
-        print('t3 -> ', t3)
-        print('t4 -> ', t4)
-        print('t5 -> ', t5)
-        print('t6 -> ', t6)
-        print('t8 -> ', t8)
-        print('t9 -> ', t9)
-        print('t10 -> ', t10)
-        print('t11 -> ', t11)
-        print('t12 -> ', t12)
-        print('t13 -> ', t13)
-        print('t14 -> ', t14)
-        print('t15 -> ', t15)
-        print('t16 -> ', t16)
-        print('t17 -> ', t17)
 
         tcc = CourseClass.objects.get(id=select_id)
-        tcc.pre_content = two_top
-        tcc.test_content = two_bot
+        tcc.pre_content = request.json['two_top']
+        tcc.test_content = request.json['two_bot']
         tcc.save()
 
         tcp = CoursePercent.objects.get(class_id=select_id)
-        tcp.task = t1
-        tcp.final_exam = t2
-        tcp.other = t3
-        tcp.presentation = t4
-        tcp.report = t5
-        tcp.practical = t6
-        tcp.middle_exam = t7
-        tcp.attendance = t8
-        tcp.quiz = t9
-        tcp.save()
+        # t1부터 순차적으로 적용
+        data = {}
+        form = CoursePercentForm(data, instance=tcp)
+        form.is_valid()  # FIXME: raise_for_valid()를 써보면 어떨까?
+        form.save()
 
         tcb = CourseBook.objects.get(class_id=select_id)
-        tcb.consult_time = t10
-        tcb.pre_knowledge = t11
-        tcb.main_note = t12
-        tcb.sub_note1 = t13
-        tcb.sub_note2 = t14
-        tcb.sub_note3 = t15
-        tcb.ref_web = t16
-        tcb.select_book = t17
-        tcb.save()
+        data = {}  # t10부터 순차적으로 적용
+        form = CourseBookForm(data, instance=tcb)
+        form.is_valid()  # FIXME:
+        form.save()
 
     elif tabIdx == 3:
         select_id = request.json['select_id']
@@ -252,53 +195,33 @@ def api_saveData(request):
         print('wp_list -> ', wp_list)
 
         tcw = CourseWeek.objects.get(class_id=select_id)
-        tcw.week1_course = wc_list[0]
-        tcw.week2_course = wc_list[1]
-        tcw.week3_course = wc_list[2]
-        tcw.week4_course = wc_list[3]
-        tcw.week5_course = wc_list[4]
-        tcw.week6_course = wc_list[5]
-        tcw.week7_course = wc_list[6]
-        tcw.week8_course = wc_list[7]
-        tcw.week9_course = wc_list[8]
-        tcw.week10_course = wc_list[9]
-        tcw.week11_course = wc_list[10]
-        tcw.week12_course = wc_list[11]
-        tcw.week13_course = wc_list[12]
-        tcw.week14_course = wc_list[13]
-        tcw.week15_course = wc_list[14]
-        tcw.week16_course = wc_list[15]
+        # wc_list[0] ... wc_list[15]를 week1_course에 매핑
+        # wp_list[0] ... wp_list[15]를 week1_practice에 매핑
+        data = {}
+        form = CourseWeekForm(data, instance=tcw)
+        form.is_valid()  # FIXME:
+        form.save()
 
-        tcw.week1_practice = wp_list[0]
-        tcw.week2_practice = wp_list[1]
-        tcw.week3_practice = wp_list[2]
-        tcw.week4_practice = wp_list[3]
-        tcw.week5_practice = wp_list[4]
-        tcw.week6_practice = wp_list[5]
-        tcw.week7_practice = wp_list[6]
-        tcw.week8_practice = wp_list[7]
-        tcw.week9_practice = wp_list[8]
-        tcw.week10_practice = wp_list[9]
-        tcw.week11_practice = wp_list[10]
-        tcw.week12_practice = wp_list[11]
-        tcw.week13_practice = wp_list[12]
-        tcw.week14_practice = wp_list[13]
-        tcw.week15_practice = wp_list[14]
-        tcw.week16_practice = wp_list[15]
-
-        tcw.save()
     elif tabIdx == 4:
         select_id = request.json['select_id']
-        fff1 = request.json['fff1']
-        fff2 = request.json['fff2']
-        fff3 = request.json['fff3']
-        fff4 = request.json['fff4']
+
         dump_truck1 = request.json['dump_truck1']
         dump_truck2 = request.json['dump_truck2']
+
+        tcc2 = CourseClass.objects.get(id=select_id)
+        data = {}  # FIXME: fff1 ~ fff4
+        form = CourseClassForm(data, instance=tcc2)
+        form.is_valid()  # FIXME
+        form.save()
 
         for d in dump_truck1:
             print('d -> ', d)
             tcc = CourseCondition.objects.get(id=d['id'])
+            data = {}  # c_code, c_method, c_content 순서대로 xx1, xx2, xx3
+            form = CourseConditionForm(data, instance=tcc)
+            form.is_valid()  # FIXME
+            form.save()
+
             tcc.c_code = d['xx1']
             tcc.c_method = d['xx2']
             tcc.c_content = d['xx3']
@@ -307,16 +230,9 @@ def api_saveData(request):
         for d in dump_truck2:
             print('d -> ', d)
             tcs = CourseStruct.objects.get(id=d['id'])
-            tcs.s_code = d['xxx1']
-            tcs.s_method = d['xxx2']
-            tcs.s_content = d['xxx3']
-            tcs.save()
-
-        tcc2 = CourseClass.objects.get(id=select_id)
-        tcc2.design_content = fff1
-        tcc2.check_content = fff2
-        tcc2.report_content = fff3
-        tcc2.exe_content = fff4
-        tcc2.save()
+            data = {}  # c_code, c_method, c_content 순서대로 xxx1, xxx2, xxx3
+            form = CourseStructForm(data, instance=tcs)
+            form.is_valid()  # FIXME
+            form.save()
 
     return JsonResponse({'result': 200})

@@ -9,13 +9,12 @@ const Home = ({history, location, match}) => {
   return (
     <>
       <PageHeader title={"Home"} />
-
+  
       <Content>
-        Home Component
+       <h1>React study</h1> 
       </Content>
     </>
   );
 };
-
 
 export default Home;
