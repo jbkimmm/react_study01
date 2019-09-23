@@ -5,6 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import KlassTable from './klass_table';
 
 const Professors = [
   {
@@ -58,9 +59,10 @@ class ProfessorList extends Component {
               );
             })
            }
+           
           </TableBody>
          </Table>
-        
+         <KlassTable subject='10001' KlassPk='001'>개설강좌</KlassTable>
       </div>
     );   
  }

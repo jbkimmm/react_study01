@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.contrib import admin
 from django.urls import path
 from . import views
 
@@ -6,7 +7,7 @@ urlpatterns = [
     path('login',
          TemplateView.as_view(template_name='login/login.html'),
          name='login'),
-
+    path('admin', admin.site.urls),
     path('', views.index, name='index'),
     path('api_getProName/<str:pro_num>', views.api_getProName, name='api_getProName'),
     path('api_getCourse', views.api_getCourse, name='api_getCourse'),
