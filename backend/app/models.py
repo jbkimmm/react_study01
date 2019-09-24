@@ -16,7 +16,7 @@ class Course(models.Model):
     professor = models.ForeignKey('Professor', db_column='main_professor', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tbl_course'
+        db_table = 'course'
         managed = False
 
     def as_dict(self):
@@ -38,7 +38,7 @@ class CourseBook(models.Model):
     select_book = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'tbl_course_book'
+        db_table = 'course_book'
         managed = False
 
     def as_dict(self):
@@ -72,7 +72,7 @@ class CourseClass(models.Model):
     professor = models.ForeignKey('Professor', db_column='sub_professor', on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'tbl_course_class'
+        db_table = 'course_class'
         managed = False
 
     def as_dict(self):
@@ -94,7 +94,7 @@ class CourseCondition(models.Model):
     c_content = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'tbl_course_condition'
+        db_table = 'course_condition'
         managed = False
 
     def as_dict(self):
@@ -113,7 +113,7 @@ class CourseCore(models.Model):
     percnet = models.CharField(max_length=100, blank=True, null=True)  # FIXME: 오타?
 
     class Meta:
-        db_table = 'tbl_course_core'
+        db_table = 'course_core'
         managed = False
 
     def as_dict(self, **kwargs):
@@ -136,7 +136,7 @@ class CoursePercent(models.Model):
     quiz = models.IntegerField()
 
     class Meta:
-        db_table = 'tbl_course_percent'
+        db_table = 'course_percent'
         managed = False
 
     def as_dict(self):
@@ -160,7 +160,7 @@ class CourseStruct(models.Model):
     s_content = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'tbl_course_struct'
+        db_table = 'course_struct'
         managed = False
 
     def as_dict(self):
@@ -187,7 +187,7 @@ class CourseSubject(models.Model):
     subject_point = models.IntegerField()
 
     class Meta:
-        db_table = 'tbl_course_subject'
+        db_table = 'course_subject'
         managed = False
 
     def as_dict(self):
@@ -230,7 +230,7 @@ class CourseTarget(models.Model):
     w_other = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        db_table = 'tbl_course_target'
+        db_table = 'course_target'
         managed = False
 
     def as_dict(self, **kwargs):
@@ -296,7 +296,7 @@ class CourseWeek(models.Model):
     week16_practice = models.TextField(blank=True, null=True)
 
     class Meta:
-        db_table = 'tbl_course_week'
+        db_table = 'course_week'
         managed = False
 
     def as_dict(self):
@@ -320,7 +320,7 @@ class Professor(models.Model):
     email = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'tbl_professor'
+        db_table = 'professor'
         managed = False
 
     def as_dict(self):
